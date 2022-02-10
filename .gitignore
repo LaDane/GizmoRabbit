@@ -1,0 +1,74 @@
+###
+# Unity folders and files
+###
+[Aa]ssets/AssetStoreTools*
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Ll]ibrary/
+[Ll]ocal[Cc]ache/
+[Oo]bj/
+[Tt]emp/
+[Uu]nityGenerated/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Aa]ssets/Plugins/Editor/JetBrains*
+
+![Aa]ssets/**/*.meta
+
+###
+# file on crash reports
+###
+sysinfo.txt
+crashlytics-build.properties
+
+###
+# VS/MD solution and project files
+###
+[Ee]xportedObj/
+.consulo/
+*.apk
+*.booproj
+*.csproj
+*.sln
+*.suo
+*.svd
+*.unityproj
+*.unitypackage
+*.user
+*.userprefs
+*.pidb
+*.pdb
+*.tmp
+*.mdb
+*.opendb
+*.VC.db
+.DS_Store
+.vs/
+.gradle/
+
+###
+# Unity3D generated meta files
+###
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+###
+# OS generated
+###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Packed Addressables
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Temporary auto-generated Android Assets
+[Aa]ssets/[Ss]treamingAssets/aa.meta
+[Aa]ssets/[Ss]treamingAssets/aa/*
