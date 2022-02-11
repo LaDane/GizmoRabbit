@@ -5,7 +5,7 @@ using UnityEngine;
 public class CompNode : MonoBehaviour {
 
     [Header("Transforms")]
-    [SerializeField] private Transform placementPos;
+    public Transform placementPos;
 
     [Header("State")]
     [SerializeField] private bool occupied = false;
@@ -92,8 +92,11 @@ public class CompNode : MonoBehaviour {
             if (col.transform.parent.gameObject == GameScene.mouseFollowGO) {
                 continue;
             } else {
-                occupied = true;
-                gameObject.SetActive(false);
+                Comp colComp = col.transform.parent.GetComponent<Comp>();
+                if (colComp != null && colComp.isPlaced) {
+                    occupied = true;
+                    gameObject.SetActive(false);          // COMENT THIS IN AGAIN
+                }
             }
         }
     }

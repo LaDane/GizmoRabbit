@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 56119001}
   - component: {fileID: 56119000}
   - component: {fileID: 56119002}
+  - component: {fileID: 56119003}
   m_Layer: 0
   m_Name: GameScene
   m_TagString: Untagged
@@ -267,6 +268,24 @@ MonoBehaviour:
   - {fileID: 6190954705831030533, guid: d39d3e2174e4e954aab1fcd0c4abd38e, type: 3}
   - {fileID: 6190954705831030533, guid: 518f402a433a66746aa4690da6c4dd17, type: 3}
   - {fileID: 6190954705831030533, guid: 1c8025737920f714d817e989c9669ace, type: 3}
+--- !u!114 &56119003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56118999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc98a68f1a6315448aff8570054fc0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 1703224301}
+  playerComp: {fileID: 1703224305}
+  comps: {fileID: 56119002}
+  placementLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &104585750
 GameObject:
   m_ObjectHideFlags: 0
@@ -2013,6 +2032,7 @@ MonoBehaviour:
   isFlying: 0
   comp: {fileID: 1703224305}
   comps: {fileID: 56119002}
+  lootCrate: {fileID: 56119003}
   placementLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -2190,7 +2210,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.7089846, y: -0.008259296}
+    - - {x: 0.6955451, y: -0.057537675}
       - {x: 0.49748874, y: -0.024488926}
       - {x: 0.21491607, y: 0.7448863}
       - {x: 0.073220015, y: 0.89264566}
@@ -2198,15 +2218,15 @@ PolygonCollider2D:
       - {x: -0.47334057, y: 1.5410328}
       - {x: -0.2480579, y: 1.1389931}
       - {x: -0.28566185, y: 0.31455493}
-      - {x: -0.5812112, y: 0.28241616}
-      - {x: -0.9788588, y: 0.021726012}
+      - {x: -0.5364127, y: 0.24657732}
+      - {x: -0.92958045, y: -0.027552366}
       - {x: -0.96592396, y: -0.20629442}
       - {x: -0.8750827, y: -0.49990582}
       - {x: -0.5949629, y: -0.6789037}
       - {x: 0.7267342, y: -0.6752362}
       - {x: 0.93864185, y: -0.54366577}
       - {x: 0.9737479, y: -0.30942822}
-      - {x: 0.93011165, y: -0.13047439}
+      - {x: 0.94803107, y: -0.19319218}
 --- !u!50 &1707950040
 Rigidbody2D:
   serializedVersion: 4

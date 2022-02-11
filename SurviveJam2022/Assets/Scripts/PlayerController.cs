@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Scripts")]
     [SerializeField] private Comp comp;
     [SerializeField] private Comps comps;
+    [SerializeField] private LootCrate lootCrate;
 
     [Header("Layers")]
     [SerializeField] private LayerMask placementLayer;
@@ -53,8 +54,9 @@ public class PlayerController : MonoBehaviour {
 
             // Get random component by clicking space
             if (Input.GetKeyDown(KeyCode.Space)) {
-                GameScene.selectedCompGO = comps.components[Random.Range(0, comps.components.Count)];
-                GameScene.selectedCompRot = Random.Range(-90, 90);
+                //GameScene.selectedCompGO = comps.components[Random.Range(0, comps.components.Count)];
+                //GameScene.selectedCompRot = Random.Range(-90, 90);
+                StartCoroutine(lootCrate.GetNextComponent());
             }
 
             // Create component to follow mouse cursor
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour {
         GameScene.mouseFollowComp.ragdollCollider.enabled = false;
         foreach (GameObject go in GameScene.mouseFollowComp.componentNodes) {
             go.SetActive(false);
-        }
+        }                                 // COMENT THIS IN AGAIN
     }
 
     private void CheckPlacementPosition() {
