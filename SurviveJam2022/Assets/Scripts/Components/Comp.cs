@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Comp : MonoBehaviour {
 
+    public bool isPlaced = false;
+
     [Header("Ragdoll")]
     public Rigidbody2D ragdollRB;
     public Collider2D ragdollCollider;
-    public FixedJoint2D joint;
+    public Joint2D joint;
 
     [Header("Placement")]
     public Rigidbody2D placementRB;

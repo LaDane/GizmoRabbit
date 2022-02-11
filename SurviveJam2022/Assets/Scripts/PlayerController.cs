@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public bool isFlying = false;
+
     [Header("Scripts")]
     [SerializeField] private Comp comp;
     [SerializeField] private Comps comps;
@@ -11,19 +13,37 @@ public class PlayerController : MonoBehaviour {
     [Header("Layers")]
     [SerializeField] private LayerMask placementLayer;
 
+    [Header("Adjustable Variables")]
+    [SerializeField] private float forceSpeed = 10f;
+    //[SerializeField] private float upForceMultiplier = 100f;
+    
+    [Header("Distance Flown")]
+    [SerializeField] private Transform distanceMeasurePoint;
+    public int distanceFlown = 0;
+
     [Header("Attached Components")]
     public List<Comp> compList = new List<Comp>();
-
-    [Header("Adjustable Variables")]
-    [SerializeField] private float forceSpeed = 50f;
 
 
     private void Update() {
         DetectGameStateChange();
 
         if (GameScene.stateFly) {
-            if (Input.GetKey(KeyCode.W)) {
-                comp.ragdollRB.AddForce(Vector2.right * forceSpeed * Time.deltaTime);
+
+            // Move player forward when grounded
+            if (!isFlying && Input.GetKey(KeyCode.W)) {
+                Vector2 southEast = transform.right - transform.up;
+                //comp.ragdollRB.AddForce(southEast * forceSpeed * (100 + (compList.Count * compMultiplier)) * Time.deltaTime);
+                //comp.ragdollRB.AddForce(southEast * (forceSpeed + (compList.Count * 3)) * 100 * Time.deltaTime);
+                comp.ragdollRB.AddForce(southEast * forceSpeed * 100 * Time.deltaTime);
+            }
+
+            // Measure distance
+            if (isFlying) {
+                MeasureDistanceFlown();
+                //float upForce = compList.Count * upForceMultiplier;
+                //comp.ragdollRB.AddForce(Vector2.up * upForce * Time.deltaTime);
+
             }
         }
 
@@ -86,13 +106,13 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void DetectGameStateChange() {
-        if (Input.GetKey(KeyCode.F1)) {
+        if (Input.GetKeyDown(KeyCode.F1)) {
             GameScene.ResetStates();
             GameScene.stateFly = true;
             EnterFlyState();
             Debug.Log("Game State = Fly");
         }
-        if (Input.GetKey(KeyCode.F2)) {
+        if (Input.GetKeyDown(KeyCode.F2)) {
             GameScene.ResetStates();
             GameScene.statePlaceComponent = true;
             EnterPlaceComponentState();
@@ -112,5 +132,15 @@ public class PlayerController : MonoBehaviour {
         foreach (Comp c in compList) {
             c.StatePlaceComponent();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        Debug.Log("Player is flying now");
+        isFlying = true;
+        comp.ragdollRB.AddForce(transform.right * 20f, ForceMode2D.Impulse);
+    }
+
+    private void MeasureDistanceFlown() {
+        distanceFlown = (int) Mathf.Abs(transform.position.x - distanceMeasurePoint.position.x);
     }
 }

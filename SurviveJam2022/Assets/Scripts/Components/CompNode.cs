@@ -16,6 +16,12 @@ public class CompNode : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     private Color transparent = new Color(255, 255, 255);
 
+    private Comp playerComp;
+
+    private void Awake() {
+        playerComp = GameObject.FindGameObjectWithTag("Player").GetComponent<Comp>();
+    }
+
     private void Start() {
         spriteRenderer = GetComponent<SpriteRenderer>();
         transparent.a = 0.42f;
@@ -57,14 +63,18 @@ public class CompNode : MonoBehaviour {
             GameObject component = Instantiate(GameScene.selectedCompGO, 
                 placementPos.position, 
                 Quaternion.Euler(0, 0, GameScene.selectedCompRot), 
-                transform.parent.parent);
+                playerComp.transform);
+                //transform.parent.parent);
 
+            Comp comp = component.GetComponent<Comp>();
             GameScene.selectedCompGO = null;
             GameObject[] playerTag = GameObject.FindGameObjectsWithTag("Player");
-            playerTag[0].GetComponent<PlayerController>().compList.Add(component.GetComponent<Comp>());
+            playerTag[0].GetComponent<PlayerController>().compList.Add(comp);
             occupied = true;
 
-            component.GetComponent<Comp>().joint.connectedBody = transform.parent.parent.GetComponent<Rigidbody2D>();
+            comp.joint.connectedBody = playerComp.ragdollRB;
+            //comp.joint.connectedBody = transform.parent.parent.GetComponent<Rigidbody2D>();
+            comp.isPlaced = true;
         }
     }
 
