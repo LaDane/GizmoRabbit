@@ -37,37 +37,26 @@ public class PlayerController : MonoBehaviour {
 
     private void Update() {
         DetectGameStateChange();
+        HandleRotation();
 
         if (GameScene.stateFly) {
-            HandleRotation();
 
             // Move player forward when grounded
             if (!isFlying && Input.GetKey(KeyCode.W)) {
                 Vector2 southEast = transform.right - transform.up;
-                //comp.ragdollRB.AddForce(southEast * forceSpeed * (100 + (compList.Count * compMultiplier)) * Time.deltaTime);
-                //comp.ragdollRB.AddForce(southEast * (forceSpeed + (compList.Count * 3)) * 100 * Time.deltaTime);
                 comp.ragdollRB.AddForce(southEast * forceSpeed * 100 * Time.deltaTime);
             }
 
             if (isFlying) {
                 ClampAngularVelocity();
                 MeasureDistanceAltitude();
-                //float upForce = compList.Count * upForceMultiplier;
-                //comp.ragdollRB.AddForce(Vector2.up * upForce * Time.deltaTime);
-
             }
         }
 
         if (GameScene.statePlaceComponent) {
+            isFlying = false;
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
-
-            // Get random component by clicking space
-            //if (Input.GetKeyDown(KeyCode.Space)) {
-                //GameScene.selectedCompGO = comps.components[Random.Range(0, comps.components.Count)];
-                //GameScene.selectedCompRot = Random.Range(-90, 90);
-                //StartCoroutine(lootCrate.GetNextComponent());
-            //}
 
             // Create component to follow mouse cursor
             if (GameScene.selectedCompGO != null && GameScene.mouseFollowGO == null) {
@@ -80,7 +69,6 @@ public class PlayerController : MonoBehaviour {
                 CheckPlacementPosition();
             }
         }
-
         // Destroy component that follows mouse once component is placed
         if (GameScene.selectedCompGO == null && GameScene.mouseFollowGO != null) {
             GameScene.mouseFollowComp = null;

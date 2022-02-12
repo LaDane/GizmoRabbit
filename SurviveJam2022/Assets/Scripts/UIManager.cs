@@ -236,9 +236,9 @@ public class UIManager : MonoBehaviour {
     private IEnumerator PanCameraToPlayer() {
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().EnterFlyState();
 
-        Vector3 playerPos = new Vector3(cameraFollowPlayer.cameraPos.x, cameraFollowPlayer.cameraPos.y, -10);
+        //Vector3 playerPos = new Vector3(cameraFollowPlayer.cameraPos.x, cameraFollowPlayer.cameraPos.y, -10);
         float sTime = Time.time;
-        while (mainCamera.transform.position != playerPos) {
+        while (mainCamera.transform.position != new Vector3(cameraFollowPlayer.cameraPos.x, cameraFollowPlayer.cameraPos.y, -10)) {
             yield return new WaitForFixedUpdate();
             float t = (Time.time - sTime) / cameraAnimateTime;
             mainCamera.transform.position = new Vector3(
