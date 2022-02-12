@@ -15,6 +15,7 @@ public class CompNode : MonoBehaviour {
 
     private SpriteRenderer spriteRenderer;
     private Color transparent = new Color(255, 255, 255);
+    private Color originalColor;
 
     private Comp playerComp;
 
@@ -24,6 +25,7 @@ public class CompNode : MonoBehaviour {
 
     private void Start() {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
         transparent.a = 0.42f;
     }
 
@@ -55,6 +57,7 @@ public class CompNode : MonoBehaviour {
 
     private void OnMouseExit() {
         spriteRenderer.color = transparent;
+        spriteRenderer.color = originalColor;
     }
 
     private IEnumerator PlaceComponent() {

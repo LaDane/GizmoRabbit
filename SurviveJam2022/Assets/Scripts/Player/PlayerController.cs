@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour {
         HandleRotation();
 
         if (GameScene.stateFly) {
+            ClampAngularVelocity();
 
             // Move player forward when grounded
             if (!isFlying && Input.GetKey(KeyCode.W)) {
@@ -48,7 +49,6 @@ public class PlayerController : MonoBehaviour {
             }
 
             if (isFlying) {
-                ClampAngularVelocity();
                 MeasureDistanceAltitude();
             }
         }

@@ -12,9 +12,13 @@ public class CompPassiveForward : MonoBehaviour {
     [SerializeField] private float activationForce = 1f;
 
     private PlayerController playerController;
+    private Rigidbody2D playerRB;
+
 
     private void Awake() {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerRB = playerController.GetComponent<Comp>().ragdollRB;
+
     }
 
     private void Update() {
@@ -22,7 +26,7 @@ public class CompPassiveForward : MonoBehaviour {
 
         if (GameScene.stateFly && playerController.isFlying) {
             Vector2 direction = forcePos1.position - forcePos2.position;
-            comp.ragdollRB.AddForce(direction.normalized * activationForce);
+            playerRB.AddForce(direction.normalized * activationForce);
         }
 
     }

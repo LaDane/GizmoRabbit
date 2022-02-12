@@ -18,12 +18,14 @@ public class CompActivate : MonoBehaviour {
     [SerializeField] private float activationForce = 3f;
 
     private PlayerController playerController;
+    private Rigidbody2D playerRB;
     private bool addedText = false;
     private GameObject letterGO = null;
     private char activationChar;
 
     private void Awake() {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerRB = playerController.GetComponent<Comp>().ragdollRB;
         if (particles != null) {
             particles.Stop();
         }
@@ -61,7 +63,14 @@ public class CompActivate : MonoBehaviour {
 
             if (isActivated) {
                 Vector2 direction = forcePos1.position - forcePos2.position;
-                comp.ragdollRB.AddForce(direction.normalized * activationForce);
+                //comp.ragdollRB.AddForce(direction.normalized * activationForce);
+                playerRB.AddForce(direction.normalized * activationForce);
+            }
+        }
+        else {
+            isActivated = false;
+            if (particles != null && particles.isPlaying) {
+                particles.Stop();
             }
         }
     }
