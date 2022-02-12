@@ -5,27 +5,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-    // Camera sizes
-    // Main menu = 10
-    // Place Component = 5
 
-    [Header("Distance + Altitude")]
-    [SerializeField] private Text distanceTrackerText;
     [HideInInspector] public int distanceTraveled;
     [HideInInspector] public int altitude;
-
-    // Loot box screen
-    [Header("Loot Box Screen")]
-    [SerializeField] private LootCrate lootCrate;
-    [SerializeField] private Transform lootBoxMenu;
-    [SerializeField] private float lootBoxMenuEnterTime = 5f;
-    [SerializeField] private float lootBoxMenuExitTime = 1f;
-    [SerializeField] private Image lootBoxImage;
-    private bool lootBoxMenuMoving = false;
-    private bool searchingForComp = false;
-    //private bool lootBoxSpriteFound = false;
-    private float lootBoxMenuStartY = -700;
-    private float startTime;
 
     // Main menu screen
     [Header("Main Menu")]
@@ -55,6 +37,33 @@ public class UIManager : MonoBehaviour {
     private int mainMenuCameraZoom = 10;
     private int playCameraZoom = 5;
 
+    [Header("Game State Tracker")]
+    [SerializeField] private Transform gameStateTracker;
+    [SerializeField] private Text gameStateTrackerDistance;
+    [SerializeField] private Text gameStateTrackerAltitude;
+    private bool gameStateTrackerActive = false;
+
+    // Loot box screen
+    [Header("Loot Box Screen")]
+    [SerializeField] private LootCrate lootCrate;
+    [SerializeField] private Transform lootBoxMenu;
+    [SerializeField] private float lootBoxMenuEnterTime = 5f;
+    [SerializeField] private float lootBoxMenuExitTime = 1f;
+    [SerializeField] private Image lootBoxImage;
+    private bool lootBoxMenuMoving = false;
+    private bool searchingForComp = false;
+    //private bool lootBoxSpriteFound = false;
+    private float lootBoxMenuStartY = -700;
+    private float startTime;
+
+    // Crash screen
+    [Header("Stats Screen")]
+    [SerializeField] private Transform statsMenu;
+    [SerializeField] private Text statsDistance;
+    [SerializeField] private Text statsHighscore;
+    private bool statsDoneCounting = false;
+
+
     private void Start() {
         howToPlayOriginalPos = howToPlayMenu.localPosition;
         settingsOriginalPos = settingsMenu.localPosition;
@@ -66,7 +75,7 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Update() {
-        distanceTrackerText.text = "Distance Traveled\n" + distanceTraveled +"\n\nAltitude\n" + altitude;
+        //distanceTrackerText.text = "Distance Traveled\n" + distanceTraveled +"\n\nAltitude\n" + altitude;
 
         if (howToPlayActive && Input.GetMouseButtonDown(0)) {
             howToPlayActive = false;
@@ -81,10 +90,13 @@ public class UIManager : MonoBehaviour {
             if (!lootBoxMenuMoving && !searchingForComp) {
                 searchingForComp = true;
                 StartCoroutine(lootCrate.GetNextComponent());
+                StartCoroutine(AnimateGameStateTracker(statsMenu, statsMenu.localPosition.y, statsMenu.localPosition.y + 700, 0.5f));
+                StartCoroutine(StatsCounter());
             }
 
             // Move loot box menu up to center of screen
-            if (!lootBoxMenuMoving && lootBoxMenu.localPosition.y != 0 && GameScene.selectedCompGO != null) {
+            if (!lootBoxMenuMoving && lootBoxMenu.localPosition.y != 0 && GameScene.selectedCompGO != null && statsDoneCounting) {
+                statsDoneCounting = false;
                 lootBoxMenuMoving = true;
                 StartCoroutine(EnterLootBoxMenu());
                 lootBoxImage.sprite = GameScene.selectedCompGO.GetComponent<Comp>().compSprite;
@@ -94,9 +106,67 @@ public class UIManager : MonoBehaviour {
         else {
             searchingForComp = false;
         }
+
+        if (GameScene.stateFly) {
+            if (!gameStateTrackerActive) {
+                gameStateTrackerActive = true;
+                StartCoroutine(AnimateGameStateTracker(gameStateTracker, gameStateTracker.localPosition.y, gameStateTracker.localPosition.y + 250, 0.5f));
+            }
+            if (gameStateTrackerActive) {
+                gameStateTrackerDistance.text = distanceTraveled + " METERS";
+                gameStateTrackerAltitude.text = altitude + " METERS";
+            }
+        }
+        if (!GameScene.stateFly) {
+            if (gameStateTrackerActive) {
+                if (distanceTraveled > GameScene.distanceHighscore) {
+                    GameScene.distanceHighscore = distanceTraveled;
+                }
+                gameStateTrackerActive = false;
+                StartCoroutine(AnimateGameStateTracker(gameStateTracker, gameStateTracker.localPosition.y, gameStateTracker.localPosition.y - 250, 0.5f));
+            }
+        }
     }
 
-    // Button press function
+    // Basic up down animation
+    private IEnumerator AnimateGameStateTracker(Transform menu, float startPos, float endPos, float time) {
+        float sTime = Time.time;
+        while (menu.localPosition.y != endPos) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / time;
+            menu.localPosition = new Vector3(menu.localPosition.x, Mathf.SmoothStep(startPos, endPos, t), menu.localPosition.z);
+        }
+    }
+
+    // Crash screen stat counter
+    private IEnumerator StatsCounter() {
+        statsHighscore.text = GameScene.distanceHighscore + " METERS";
+        float oldHS = GameScene.distanceHighscore;
+        Debug.Log("old hs : " + oldHS);
+        
+        yield return new WaitForSeconds(1f);
+
+        float d = 0f;
+        float hs = oldHS;
+        //float newHS = GameScene.distanceHighscore;
+        //Debug.Log("new hs : " + newHS);
+
+        while (d != distanceTraveled || hs != GameScene.distanceHighscore) {
+            yield return new WaitForFixedUpdate();
+            if (d != distanceTraveled) {
+                d++;
+                statsDistance.text = d + " METERS";
+            }
+            if (d > oldHS && hs != GameScene.distanceHighscore) {
+                hs++;
+                statsHighscore.text = hs + " METERS";
+            }
+        }
+        yield return new WaitForSeconds(1f);
+        statsDoneCounting = true;
+    }
+
+    // Loot box attach component button press function
     public void AttachComponent() {
         GameScene.EnterStatePlaceComponent();
         GameObject[] oldPlayers = GameObject.FindGameObjectsWithTag("PlayerOld");
@@ -104,6 +174,7 @@ public class UIManager : MonoBehaviour {
             Destroy(op);
         }
         StartCoroutine(RemoveLootBoxMenu());
+        statsMenu.localPosition = new Vector3(0f, -700, 0f);
     }
 
     // Loot box menu

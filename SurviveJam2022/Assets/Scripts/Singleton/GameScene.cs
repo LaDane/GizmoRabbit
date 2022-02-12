@@ -52,6 +52,9 @@ public class GameScene : MonoSingleton<GameScene> {
     public static GameObject playerObject;
     public static GameObject playerObjectClone;
 
+    // Highscore
+    public static float distanceHighscore = 0f;
+
 
     private void Awake() {
         FillAvailableChars();
