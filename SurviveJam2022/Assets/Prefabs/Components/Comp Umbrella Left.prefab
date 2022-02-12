@@ -368,6 +368,7 @@ MonoBehaviour:
   componentNodes:
   - {fileID: 8493011964485598356}
   - {fileID: 487496145528169130}
+  compSprite: {fileID: 21300000, guid: 23492f19786b7764b935baeb389698ab, type: 3}
 --- !u!114 &5703720258012265079
 MonoBehaviour:
   m_ObjectHideFlags: 0

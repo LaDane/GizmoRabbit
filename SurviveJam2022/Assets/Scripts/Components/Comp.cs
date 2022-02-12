@@ -18,6 +18,9 @@ public class Comp : MonoBehaviour {
     [Header("Nodes")]
     public List<GameObject> componentNodes = new List<GameObject>();
 
+    [Header("Sprite")]
+    public Sprite compSprite;
+
     private void Awake() {
         if (GameScene.stateFly) {
             StateFly();
@@ -34,6 +37,10 @@ public class Comp : MonoBehaviour {
         ragdollRB.simulated = true;
         ragdollCollider.enabled = true;
 
+        if (joint != null) {
+            joint.enabled = true;
+        }
+
         foreach (GameObject go in componentNodes) {
             go.SetActive(false);
         }
@@ -49,5 +56,22 @@ public class Comp : MonoBehaviour {
         foreach (GameObject go in componentNodes) {
             go.SetActive(true);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.tag.Equals("DeathZone")) {
+
+            if (!GameScene.stateLootCrate) {
+                GameScene.EnterStateLootCrate();
+            }
+            //GameScene.ResetStates();
+            //GameScene.stateLootCrate = true;
+            //StartCoroutine(Explode());
+        }
+    }
+
+    private IEnumerator Explode() {
+        yield return new WaitForSeconds(0.1f);
+        ragdollRB.AddExplosionForce(50f, this.transform.position, 5);
     }
 }

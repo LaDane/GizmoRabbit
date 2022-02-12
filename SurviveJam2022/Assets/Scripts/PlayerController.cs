@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Comp comp;
     [SerializeField] private Comps comps;
     [SerializeField] private LootCrate lootCrate;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Layers")]
     [SerializeField] private LayerMask placementLayer;
@@ -18,13 +19,19 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float forceSpeed = 10f;
     //[SerializeField] private float upForceMultiplier = 100f;
     
-    [Header("Distance Flown")]
+    [Header("Distance + Altitude")]
     [SerializeField] private Transform distanceMeasurePoint;
-    public int distanceFlown = 0;
+    [SerializeField] private Transform altitudeMeasurePoint;
+    //public int distanceFlown = 0;
 
     [Header("Attached Components")]
     public List<Comp> compList = new List<Comp>();
 
+
+    private void Start() {
+        //EnterFlyState();
+        //GameScene.EnterStateFly();
+    }
 
     private void Update() {
         DetectGameStateChange();
@@ -41,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 
             // Measure distance
             if (isFlying) {
-                MeasureDistanceFlown();
+                MeasureDistanceAltitude();
                 //float upForce = compList.Count * upForceMultiplier;
                 //comp.ragdollRB.AddForce(Vector2.up * upForce * Time.deltaTime);
 
@@ -64,17 +71,17 @@ public class PlayerController : MonoBehaviour {
                 CreateMouseFollowComp(mousePos);
             }
 
-            // Destroy component that follows mouse once component is placed
-            if (GameScene.selectedCompGO == null && GameScene.mouseFollowGO != null) {
-                GameScene.mouseFollowComp = null;
-                Destroy(GameScene.mouseFollowGO);
-            }
-
             // Update component that follows mouse's position and check if valid placement
             if (GameScene.mouseFollowGO != null) {
                 GameScene.mouseFollowGO.transform.position = mousePos;
                 CheckPlacementPosition();
             }
+        }
+
+        // Destroy component that follows mouse once component is placed
+        if (GameScene.selectedCompGO == null && GameScene.mouseFollowGO != null) {
+            GameScene.mouseFollowComp = null;
+            Destroy(GameScene.mouseFollowGO);
         }
     }
 
@@ -84,7 +91,7 @@ public class PlayerController : MonoBehaviour {
         GameScene.mouseFollowComp.ragdollCollider.enabled = false;
         foreach (GameObject go in GameScene.mouseFollowComp.componentNodes) {
             go.SetActive(false);
-        }                                 // COMENT THIS IN AGAIN
+        }
     }
 
     private void CheckPlacementPosition() {
@@ -109,9 +116,10 @@ public class PlayerController : MonoBehaviour {
 
     private void DetectGameStateChange() {
         if (Input.GetKeyDown(KeyCode.F1)) {
-            GameScene.ResetStates();
-            GameScene.stateFly = true;
+            //GameScene.ResetStates();
+            //GameScene.stateFly = true;
             EnterFlyState();
+            GameScene.EnterStateFly();
             Debug.Log("Game State = Fly");
         }
         if (Input.GetKeyDown(KeyCode.F2)) {
@@ -122,14 +130,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void EnterFlyState() {
+    public void EnterFlyState() {
         comp.StateFly();
         foreach (Comp c in compList) {
             c.StateFly();
         }
     }
 
-    private void EnterPlaceComponentState() {
+    public void EnterPlaceComponentState() {
         comp.StatePlaceComponent();
         foreach (Comp c in compList) {
             c.StatePlaceComponent();
@@ -137,12 +145,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        Debug.Log("Player is flying now");
         isFlying = true;
         comp.ragdollRB.AddForce(transform.right * 20f, ForceMode2D.Impulse);
     }
 
-    private void MeasureDistanceFlown() {
-        distanceFlown = (int) Mathf.Abs(transform.position.x - distanceMeasurePoint.position.x);
+    private void MeasureDistanceAltitude() {
+        uiManager.distanceTraveled = (int) Mathf.Abs(transform.position.x - distanceMeasurePoint.position.x);
+        uiManager.altitude = (int)Mathf.Abs(transform.position.y - altitudeMeasurePoint.position.y);
     }
 }

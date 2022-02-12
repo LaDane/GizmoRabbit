@@ -20,6 +20,12 @@ public class LootCrate : MonoBehaviour {
     }
 
     public IEnumerator GetNextComponent() {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
+        playerComp = player.GetComponent<Comp>();
+
+        playerController.EnterPlaceComponentState();
+
         if (grabbaleList.Count == 0) {
             grabbaleList = new List<GameObject>(originalList);
         }

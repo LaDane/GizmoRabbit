@@ -75,6 +75,10 @@ public class CompNode : MonoBehaviour {
             comp.joint.connectedBody = playerComp.ragdollRB;
             //comp.joint.connectedBody = transform.parent.parent.GetComponent<Rigidbody2D>();
             comp.isPlaced = true;
+
+            GameScene.EnterStateFly();
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<PlayerController>().EnterFlyState();
         }
     }
 

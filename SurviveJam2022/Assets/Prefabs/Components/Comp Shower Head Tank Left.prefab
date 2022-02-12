@@ -462,6 +462,7 @@ MonoBehaviour:
   - {fileID: 8493011964485598356}
   - {fileID: 4135663537682677033}
   - {fileID: 487496145528169130}
+  compSprite: {fileID: 21300000, guid: e7313b347ff476b419078a78e418e83a, type: 3}
 --- !u!114 &513135694651517695
 MonoBehaviour:
   m_ObjectHideFlags: 0
