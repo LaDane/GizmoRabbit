@@ -86,6 +86,7 @@ public class LootCrate : MonoBehaviour {
 
             //getIndex++;
             if (grabbaleList.Count == 0) {
+                originalList.Shuffle();
                 grabbaleList = new List<GameObject>(originalList);
             }
 

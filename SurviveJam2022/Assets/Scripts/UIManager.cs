@@ -8,7 +8,6 @@ public class UIManager : MonoBehaviour {
     // Camera sizes
     // Main menu = 10
     // Place Component = 5
-    [SerializeField] Camera mainCamera;
 
     [Header("Distance + Altitude")]
     [SerializeField] private Text distanceTrackerText;
@@ -34,10 +33,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Transform buttonPlayGame;
     [SerializeField] private Transform buttonHowToPlay;
     [SerializeField] private Transform buttonSettings;
-    [SerializeField] private float buttonAnimateTime = 2f;
+    [SerializeField] private float buttonAnimateTime = 1.5f;
     [SerializeField] private float dapperAnimateTime = 4f;
     private Vector3 mainMenuCameraPos;
-    private int mainMenuCameraZoom = 10;
 
     [Header("How to play + Settings")]
     [SerializeField] private Transform howToPlayMenu;
@@ -48,9 +46,14 @@ public class UIManager : MonoBehaviour {
     private Vector3 settingsOriginalPos;
     private bool settingsActive = false;
 
-    [Header("Camera pan")]
+    [Header("Camera")]
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private CameraFollowPlayer cameraFollowPlayer;
     [SerializeField] private float cameraAnimateTime = 5f;
+    //[SerializeField] private Vector3 playerFocusPos = new Vector3(0f, 0f, -10);
     private Vector3 cameraOriginalPos;
+    private int mainMenuCameraZoom = 10;
+    private int playCameraZoom = 5;
 
     private void Start() {
         howToPlayOriginalPos = howToPlayMenu.localPosition;
@@ -128,10 +131,11 @@ public class UIManager : MonoBehaviour {
     // Main menu
     private IEnumerator EnterGame() {
         StartCoroutine(EnterDapperRabbit());
+        yield return new WaitForSeconds(0.122f);
         StartCoroutine(EnterMainMenuButton(buttonPlayGame));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.12f);
         StartCoroutine(EnterMainMenuButton(buttonHowToPlay));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.12f);
         StartCoroutine(EnterMainMenuButton(buttonSettings));
     }
 
@@ -193,12 +197,12 @@ public class UIManager : MonoBehaviour {
         StartCoroutine(ExitDapperRabbit());
 
         StartCoroutine(ExitMainMenuButton(buttonSettings));
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.05f);
         StartCoroutine(ExitMainMenuButton(buttonHowToPlay));
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.05f);
         StartCoroutine(ExitMainMenuButton(buttonPlayGame));
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         StartCoroutine(PanCameraToPlayer());
     }
 
@@ -230,15 +234,21 @@ public class UIManager : MonoBehaviour {
     }
 
     private IEnumerator PanCameraToPlayer() {
-        float sTime = Time.time;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().EnterFlyState();
 
-        while (mainCamera.transform.position != Vector3.zero) {
+        Vector3 playerPos = new Vector3(cameraFollowPlayer.cameraPos.x, cameraFollowPlayer.cameraPos.y, -10);
+        float sTime = Time.time;
+        while (mainCamera.transform.position != playerPos) {
             yield return new WaitForFixedUpdate();
             float t = (Time.time - sTime) / cameraAnimateTime;
             mainCamera.transform.position = new Vector3(
-                Mathf.SmoothStep(cameraOriginalPos.x, 0, t),
-                Mathf.SmoothStep(cameraOriginalPos.y, 0, t),
+                Mathf.SmoothStep(cameraOriginalPos.x, cameraFollowPlayer.cameraPos.x, t),
+                Mathf.SmoothStep(cameraOriginalPos.y, cameraFollowPlayer.cameraPos.y, t),
                 -10);
+            mainCamera.orthographicSize = Mathf.SmoothStep(mainMenuCameraZoom, playCameraZoom, t);
         }
+
+        GameScene.EnterStateFly();
+        cameraFollowPlayer.followPlayer = true;
     }
 }

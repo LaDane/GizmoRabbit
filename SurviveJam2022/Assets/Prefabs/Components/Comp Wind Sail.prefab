@@ -477,7 +477,7 @@ MonoBehaviour:
   comp: {fileID: 4332530634648291675}
   forcePos1: {fileID: 5536849121207903935}
   forcePos2: {fileID: 2910347252046994358}
-  activationForce: 1
+  activationForce: 0.8
 --- !u!1001 &1905707194842775974
 PrefabInstance:
   m_ObjectHideFlags: 0
