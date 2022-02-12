@@ -26,6 +26,9 @@ public class CompPassiveForward : MonoBehaviour {
 
         if (GameScene.stateFly && playerController.isFlying) {
             Vector2 direction = forcePos1.position - forcePos2.position;
+            if (playerRB == null) {
+                return;
+            }
             playerRB.AddForce(direction.normalized * activationForce);
         }
 
