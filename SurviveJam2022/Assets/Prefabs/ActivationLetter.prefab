@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3653537865793910696}
   - component: {fileID: 4929726972398301005}
   - component: {fileID: 2927990595346433445}
+  - component: {fileID: 7728581187756101056}
   m_Layer: 0
   m_Name: ActivationLetter
   m_TagString: Untagged
@@ -95,3 +96,16 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &7728581187756101056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163768584081955201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9212447c61aa491459c74a3f2f7a9843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachedGameObject: {fileID: 0}

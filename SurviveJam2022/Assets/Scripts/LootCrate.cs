@@ -44,13 +44,18 @@ public class LootCrate : MonoBehaviour {
                 }
             }
         }
+        allNodes.Reverse();
 
         // Check if there is a valid position
+        //float startTime = Time.time;
+        System.DateTime startTime = System.DateTime.UtcNow;
         int loopIteration = 0;
         while (true) {
             GameObject componentPrefab = grabbaleList[0];
             GameObject component = Instantiate(componentPrefab, new Vector3(0,0,0), Quaternion.Euler(0, 0, 0));
             Collider2D componentCollider = component.GetComponent<Comp>().placementCollider;
+            component.GetComponent<Comp>().StatePlaceComponent();
+            
 
             for (int i = 0; i < 50; i++) {
                 float componentRotation = Random.Range(-90, 90);
@@ -67,6 +72,8 @@ public class LootCrate : MonoBehaviour {
                         grabbaleList.RemoveAt(0);
                         GameScene.selectedCompRot = componentRotation;
                         GameScene.selectedCompGO = componentPrefab;
+                        System.TimeSpan ts = System.DateTime.UtcNow - startTime;
+                        Debug.Log(component.name + " can be placed at : " + component.transform.position + "\tDuration seconds : "+ (ts.TotalMilliseconds / 1000).ToString("0.00"));
                         yield break;
                     }
                 }

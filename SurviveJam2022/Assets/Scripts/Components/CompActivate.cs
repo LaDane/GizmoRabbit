@@ -37,6 +37,7 @@ public class CompActivate : MonoBehaviour {
             letterGO = Instantiate(letterPrefab, letterPos.position, Quaternion.Euler(0, 0, 0));
             activationChar = GameScene.GetRandomLetter();
             letterGO.GetComponent<TextMesh>().text = activationChar.ToString().ToUpper();
+            letterGO.GetComponent<DestroyLetter>().attachedGameObject = gameObject;
         }
 
         if (letterGO != null) {
