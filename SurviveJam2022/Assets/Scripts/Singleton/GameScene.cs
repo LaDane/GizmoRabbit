@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameScene : MonoSingleton<GameScene> {
 
     // Game States
-    public static bool stateMainMenu;
+    public static bool stateMainMenu = true;
     public static bool stateFly = false;
-    public static bool statePlaceComponent = true;
+    public static bool statePlaceComponent = false;
     public static bool stateLootCrate = false;
     public static void ResetStates() {
         stateFly = false;

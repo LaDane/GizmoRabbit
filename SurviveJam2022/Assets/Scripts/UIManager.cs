@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
+    // Camera sizes
+    // Main menu = 10
+    // Place Component = 5
+    [SerializeField] Camera mainCamera;
+
     [Header("Distance + Altitude")]
     [SerializeField] private Text distanceTrackerText;
     [HideInInspector] public int distanceTraveled;
@@ -23,9 +28,51 @@ public class UIManager : MonoBehaviour {
     private float lootBoxMenuStartY = -700;
     private float startTime;
 
+    // Main menu screen
+    [Header("Main Menu")]
+    [SerializeField] private Transform dapperRabbitSprite;
+    [SerializeField] private Transform buttonPlayGame;
+    [SerializeField] private Transform buttonHowToPlay;
+    [SerializeField] private Transform buttonSettings;
+    [SerializeField] private float buttonAnimateTime = 2f;
+    [SerializeField] private float dapperAnimateTime = 4f;
+    private Vector3 mainMenuCameraPos;
+    private int mainMenuCameraZoom = 10;
+
+    [Header("How to play + Settings")]
+    [SerializeField] private Transform howToPlayMenu;
+    [SerializeField] private Transform settingsMenu;
+    [SerializeField] private float topMenuAnimateTime = 0.8f;
+    private Vector3 howToPlayOriginalPos;
+    private bool howToPlayActive = false;
+    private Vector3 settingsOriginalPos;
+    private bool settingsActive = false;
+
+    [Header("Camera pan")]
+    [SerializeField] private float cameraAnimateTime = 5f;
+    private Vector3 cameraOriginalPos;
+
+    private void Start() {
+        howToPlayOriginalPos = howToPlayMenu.localPosition;
+        settingsOriginalPos = settingsMenu.localPosition;
+
+        mainCamera.orthographicSize = mainMenuCameraZoom;
+        cameraOriginalPos = mainCamera.transform.position;
+
+        StartCoroutine(EnterGame());
+    }
 
     private void Update() {
         distanceTrackerText.text = "Distance Traveled\n" + distanceTraveled +"\n\nAltitude\n" + altitude;
+
+        if (howToPlayActive && Input.GetMouseButtonDown(0)) {
+            howToPlayActive = false;
+            StartCoroutine(AnimateTopMenu(howToPlayMenu, 0f, howToPlayOriginalPos.y, topMenuAnimateTime));
+        }
+        if (settingsActive && Input.GetMouseButtonDown(0)) {                // CHANGE THIS 
+            settingsActive = false;
+            StartCoroutine(AnimateTopMenu(settingsMenu, 0f, settingsOriginalPos.y, topMenuAnimateTime));
+        }
 
         if (GameScene.stateLootCrate) {
             if (!lootBoxMenuMoving && !searchingForComp) {
@@ -56,6 +103,7 @@ public class UIManager : MonoBehaviour {
         StartCoroutine(RemoveLootBoxMenu());
     }
 
+    // Loot box menu
     private IEnumerator EnterLootBoxMenu() {
         startTime = Time.time;
         while (lootBoxMenu.localPosition.y != 0) {
@@ -75,5 +123,122 @@ public class UIManager : MonoBehaviour {
         }
         lootBoxMenuMoving = false;
         lootBoxMenu.localPosition = new Vector3(0, lootBoxMenuStartY, 0);
+    }
+
+    // Main menu
+    private IEnumerator EnterGame() {
+        StartCoroutine(EnterDapperRabbit());
+        StartCoroutine(EnterMainMenuButton(buttonPlayGame));
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(EnterMainMenuButton(buttonHowToPlay));
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(EnterMainMenuButton(buttonSettings));
+    }
+
+    private IEnumerator EnterMainMenuButton(Transform button) {
+        float sTime = Time.time;
+        float originalYPos = button.localPosition.y;
+        float startYPos = originalYPos - 700;
+        button.localPosition = new Vector3(button.localPosition.x, startYPos, button.localPosition.z);
+        button.gameObject.SetActive(true);
+
+        while (button.localPosition.y != originalYPos) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / buttonAnimateTime;
+            button.localPosition = new Vector3(button.localPosition.x, Mathf.SmoothStep(startYPos, originalYPos, t), button.localPosition.z);
+        }
+    }
+
+    private IEnumerator EnterDapperRabbit() {
+        float sTime = Time.time;
+        float originalXPos = dapperRabbitSprite.localPosition.x;
+        float startXPos = originalXPos - 30;
+        dapperRabbitSprite.localPosition = new Vector3(startXPos, dapperRabbitSprite.localPosition.y, dapperRabbitSprite.localPosition.z);
+        dapperRabbitSprite.gameObject.SetActive(true);
+
+        while (dapperRabbitSprite.localPosition.x != originalXPos) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / dapperAnimateTime;
+            dapperRabbitSprite.localPosition = new Vector3(Mathf.SmoothStep(startXPos, originalXPos, t), dapperRabbitSprite.localPosition.y, dapperRabbitSprite.localPosition.z);
+        }
+    }
+
+    // How to play & Settings
+    public void HowToPlay() {
+        StartCoroutine(AnimateTopMenu(howToPlayMenu, howToPlayOriginalPos.y, 0f, topMenuAnimateTime));
+        howToPlayActive = true;
+    }
+
+    public void Settings() {
+        StartCoroutine(AnimateTopMenu(settingsMenu, settingsOriginalPos.y, 0f, topMenuAnimateTime));
+        settingsActive = true;
+    }
+
+    private IEnumerator AnimateTopMenu(Transform menu, float startPos, float endPos, float animateTime) {
+        float sTime = Time.time;
+        while (menu.localPosition.y != endPos) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / animateTime;
+            menu.localPosition = new Vector3(menu.localPosition.x, Mathf.SmoothStep(startPos, endPos, t), menu.localPosition.z);
+        }
+    }
+
+    // Play
+    public void Play() {
+        StartCoroutine(AnimatePlay());
+    }
+
+    private IEnumerator AnimatePlay() {
+        yield return new WaitForFixedUpdate();
+        StartCoroutine(ExitDapperRabbit());
+
+        StartCoroutine(ExitMainMenuButton(buttonSettings));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(ExitMainMenuButton(buttonHowToPlay));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(ExitMainMenuButton(buttonPlayGame));
+
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(PanCameraToPlayer());
+    }
+
+    private IEnumerator ExitDapperRabbit() {
+        float sTime = Time.time;
+        float startXPos = dapperRabbitSprite.localPosition.x;
+        float endXPos = startXPos + 100;
+
+        while (dapperRabbitSprite.localPosition.x != endXPos) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / dapperAnimateTime;
+            dapperRabbitSprite.localPosition = new Vector3(Mathf.SmoothStep(startXPos, endXPos, t), dapperRabbitSprite.localPosition.y, dapperRabbitSprite.localPosition.z);
+        }
+        dapperRabbitSprite.gameObject.SetActive(false);
+    }
+
+    private IEnumerator ExitMainMenuButton(Transform button) {
+        float sTime = Time.time;
+        float originalYPos = button.localPosition.y - 700;
+        float startYPos = button.localPosition.y;
+        button.localPosition = new Vector3(button.localPosition.x, startYPos, button.localPosition.z);
+        button.gameObject.SetActive(true);
+
+        while (button.localPosition.y != originalYPos) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / (buttonAnimateTime / 2);
+            button.localPosition = new Vector3(button.localPosition.x, Mathf.SmoothStep(startYPos, originalYPos, t), button.localPosition.z);
+        }
+    }
+
+    private IEnumerator PanCameraToPlayer() {
+        float sTime = Time.time;
+
+        while (mainCamera.transform.position != Vector3.zero) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / cameraAnimateTime;
+            mainCamera.transform.position = new Vector3(
+                Mathf.SmoothStep(cameraOriginalPos.x, 0, t),
+                Mathf.SmoothStep(cameraOriginalPos.y, 0, t),
+                -10);
+        }
     }
 }
