@@ -30,21 +30,11 @@ public class UIManager : MonoBehaviour {
         if (GameScene.stateLootCrate) {
             if (!lootBoxMenuMoving && !searchingForComp) {
                 searchingForComp = true;
-                //lootBoxMenuMoving = true;
-                //lootBoxMenu.localPosition = new Vector3(0, lootBoxMenuStartY, 0);
-                //startTime = Time.time;
                 StartCoroutine(lootCrate.GetNextComponent());
             }
 
             // Move loot box menu up to center of screen
             if (!lootBoxMenuMoving && lootBoxMenu.localPosition.y != 0 && GameScene.selectedCompGO != null) {
-                //float t = (Time.time - startTime) / lootBoxMenuEnterTime;
-                //lootBoxMenu.localPosition = new Vector3(0, Mathf.SmoothStep(lootBoxMenuStartY, 0, t), 0);
-
-                //if (!lootBoxSpriteFound && GameScene.selectedCompGO != null) {
-                //    lootBoxImage.sprite = GameScene.selectedCompGO.GetComponent<Comp>().compSprite;
-                //    lootBoxImage.transform.rotation = Quaternion.Euler(0, 0, GameScene.selectedCompRot); 
-                //}
                 lootBoxMenuMoving = true;
                 StartCoroutine(EnterLootBoxMenu());
                 lootBoxImage.sprite = GameScene.selectedCompGO.GetComponent<Comp>().compSprite;

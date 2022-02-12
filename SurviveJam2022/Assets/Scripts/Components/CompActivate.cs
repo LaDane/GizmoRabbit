@@ -61,7 +61,7 @@ public class CompActivate : MonoBehaviour {
 
             if (isActivated) {
                 Vector2 direction = forcePos1.position - forcePos2.position;
-                comp.ragdollRB.AddForce(direction * activationForce);
+                comp.ragdollRB.AddForce(direction.normalized * activationForce);
             }
         }
     }

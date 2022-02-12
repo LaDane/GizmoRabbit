@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameScene : MonoSingleton<GameScene> {
 
     // Game States
+    public static bool stateMainMenu;
     public static bool stateFly = false;
     public static bool statePlaceComponent = true;
     public static bool stateLootCrate = false;
@@ -44,7 +45,7 @@ public class GameScene : MonoSingleton<GameScene> {
     public static bool canPlaceComponent = true;
 
     // Activate Component
-    private static char[] alphabet = "abcdefghijklmnopqrstuvxyz".ToCharArray();        // no w
+    private static char[] alphabet = "bcefghijklmnopqrstuvxyz".ToCharArray();        // no w
     private static List<char> availableChars = new List<char>();
 
     // Player clone

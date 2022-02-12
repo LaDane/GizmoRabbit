@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Adjustable Variables")]
     [SerializeField] private float forceSpeed = 10f;
+    [SerializeField] private float rotationTorque = 10f;
+    [SerializeField] private float maxAngularVelocity = 200f;
     //[SerializeField] private float upForceMultiplier = 100f;
     
     [Header("Distance + Altitude")]
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour {
         DetectGameStateChange();
 
         if (GameScene.stateFly) {
+            HandleRotation();
 
             // Move player forward when grounded
             if (!isFlying && Input.GetKey(KeyCode.W)) {
@@ -46,8 +49,8 @@ public class PlayerController : MonoBehaviour {
                 comp.ragdollRB.AddForce(southEast * forceSpeed * 100 * Time.deltaTime);
             }
 
-            // Measure distance
             if (isFlying) {
+                ClampAngularVelocity();
                 MeasureDistanceAltitude();
                 //float upForce = compList.Count * upForceMultiplier;
                 //comp.ragdollRB.AddForce(Vector2.up * upForce * Time.deltaTime);
@@ -60,11 +63,11 @@ public class PlayerController : MonoBehaviour {
             mousePos.z = 0;
 
             // Get random component by clicking space
-            if (Input.GetKeyDown(KeyCode.Space)) {
+            //if (Input.GetKeyDown(KeyCode.Space)) {
                 //GameScene.selectedCompGO = comps.components[Random.Range(0, comps.components.Count)];
                 //GameScene.selectedCompRot = Random.Range(-90, 90);
-                StartCoroutine(lootCrate.GetNextComponent());
-            }
+                //StartCoroutine(lootCrate.GetNextComponent());
+            //}
 
             // Create component to follow mouse cursor
             if (GameScene.selectedCompGO != null && GameScene.mouseFollowGO == null) {
@@ -142,6 +145,21 @@ public class PlayerController : MonoBehaviour {
         foreach (Comp c in compList) {
             c.StatePlaceComponent();
         }
+    }
+
+    private void HandleRotation() {
+        if (Input.GetKey(KeyCode.A)) {
+            comp.ragdollRB.AddTorque(rotationTorque * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.D)) {
+            comp.ragdollRB.AddTorque(- rotationTorque * Time.deltaTime);
+        }
+    }
+
+    private void ClampAngularVelocity() {
+        //Debug.Log(comp.ragdollRB.angularVelocity);
+        if (comp.ragdollRB.angularVelocity < -maxAngularVelocity) { comp.ragdollRB.angularVelocity = -maxAngularVelocity; }
+        if (comp.ragdollRB.angularVelocity > maxAngularVelocity) { comp.ragdollRB.angularVelocity = maxAngularVelocity; }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
