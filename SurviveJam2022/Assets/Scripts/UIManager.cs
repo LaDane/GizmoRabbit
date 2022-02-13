@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Transform dapperRabbitSprite;
     [SerializeField] private Transform buttonPlayGame;
     [SerializeField] private Transform buttonHowToPlay;
-    [SerializeField] private Transform buttonSettings;
+    [SerializeField] private Transform buttonExit;
     [SerializeField] private float buttonAnimateTime = 1.5f;
     [SerializeField] private float dapperAnimateTime = 4f;
     private Vector3 mainMenuCameraPos;
@@ -72,6 +72,10 @@ public class UIManager : MonoBehaviour {
     private bool displayingNewRecordImage = false;
     private Vector3 newRecordImageOriginalScale;
 
+    [Header("Place Component Screen")]
+    [SerializeField] private GameObject placeComponentHomeButton;
+    [SerializeField] private GameObject componentPlacementGuide;
+
 
     private void Start() {
         howToPlayOriginalPos = howToPlayMenu.localPosition;
@@ -88,6 +92,23 @@ public class UIManager : MonoBehaviour {
 
     private void Update() {
         //distanceTrackerText.text = "Distance Traveled\n" + distanceTraveled +"\n\nAltitude\n" + altitude;
+
+        if (GameScene.statePlaceComponent) {
+            if (!placeComponentHomeButton.activeInHierarchy) {
+                placeComponentHomeButton.SetActive(true);
+            }
+            if (!componentPlacementGuide.activeInHierarchy) {
+                componentPlacementGuide.SetActive(true);
+            }
+        }
+        if (!GameScene.statePlaceComponent) {
+            if (placeComponentHomeButton.activeInHierarchy) {
+                placeComponentHomeButton.SetActive(false);
+            }
+            if (componentPlacementGuide.activeInHierarchy) {
+                componentPlacementGuide.SetActive(false);
+            }
+        }
 
         if (howToPlayActive && Input.GetMouseButtonDown(0)) {
             howToPlayActive = false;
@@ -285,7 +306,7 @@ public class UIManager : MonoBehaviour {
         yield return new WaitForSeconds(0.12f);
         StartCoroutine(EnterMainMenuButton(buttonHowToPlay));
         yield return new WaitForSeconds(0.12f);
-        StartCoroutine(EnterMainMenuButton(buttonSettings));
+        StartCoroutine(EnterMainMenuButton(buttonExit));
     }
 
     private IEnumerator EnterMainMenuButton(Transform button) {
@@ -322,9 +343,14 @@ public class UIManager : MonoBehaviour {
         howToPlayActive = true;
     }
 
-    public void Settings() {
-        StartCoroutine(AnimateTopMenu(settingsMenu, settingsOriginalPos.y, 0f, topMenuAnimateTime));
-        settingsActive = true;
+    //public void Settings() {
+    //    StartCoroutine(AnimateTopMenu(settingsMenu, settingsOriginalPos.y, 0f, topMenuAnimateTime));
+    //    settingsActive = true;
+    //}
+
+    public void ExitButton() {
+        Debug.Log("Quit");
+        Application.Quit();
     }
 
     private IEnumerator AnimateTopMenu(Transform menu, float startPos, float endPos, float animateTime) {
@@ -345,7 +371,7 @@ public class UIManager : MonoBehaviour {
         yield return new WaitForFixedUpdate();
         StartCoroutine(ExitDapperRabbit());
 
-        StartCoroutine(ExitMainMenuButton(buttonSettings));
+        StartCoroutine(ExitMainMenuButton(buttonExit));
         yield return new WaitForSeconds(0.05f);
         StartCoroutine(ExitMainMenuButton(buttonHowToPlay));
         yield return new WaitForSeconds(0.05f);
