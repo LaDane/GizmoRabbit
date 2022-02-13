@@ -50,6 +50,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private float lootBoxMenuEnterTime = 5f;
     [SerializeField] private float lootBoxMenuExitTime = 1f;
     [SerializeField] private Image lootBoxImage;
+    [SerializeField] private Button buttonAttach;
+    [SerializeField] private Button buttonReroll;
+    [SerializeField] private Sprite rerollProcess;
     private bool lootBoxMenuMoving = false;
     private bool searchingForComp = false;
     //private bool lootBoxSpriteFound = false;
@@ -142,14 +145,9 @@ public class UIManager : MonoBehaviour {
     private IEnumerator StatsCounter() {
         statsHighscore.text = GameScene.distanceHighscore + " METERS";
         float oldHS = GameScene.distanceHighscore;
-        Debug.Log("old hs : " + oldHS);
-        
         yield return new WaitForSeconds(1f);
-
         float d = 0f;
         float hs = oldHS;
-        //float newHS = GameScene.distanceHighscore;
-        //Debug.Log("new hs : " + newHS);
 
         while (d != distanceTraveled || hs != GameScene.distanceHighscore) {
             yield return new WaitForFixedUpdate();
@@ -197,8 +195,38 @@ public class UIManager : MonoBehaviour {
         }
         lootBoxMenuMoving = false;
         lootBoxMenu.localPosition = new Vector3(0, lootBoxMenuStartY, 0);
+        buttonReroll.interactable = true;
     }
 
+    public void RerollComponent() {
+        buttonReroll.interactable = false;
+        buttonAttach.interactable = false;
+        lootBoxImage.sprite = rerollProcess;
+        StartCoroutine(StartRerollComponent());
+    }
+
+    private IEnumerator StartRerollComponent() {
+        GameObject oldComp = GameScene.selectedCompGO;
+        StartCoroutine(lootCrate.GetNextComponent());
+
+        System.DateTime startTime = System.DateTime.UtcNow;
+        System.TimeSpan ts = System.DateTime.UtcNow - startTime;
+        float rotZ = 0f;
+
+        while (GameScene.selectedCompGO == oldComp || ((int)ts.TotalMilliseconds) < 2000) {
+            yield return new WaitForFixedUpdate();
+            ts = System.DateTime.UtcNow - startTime;
+            Debug.Log(ts.TotalMilliseconds);
+
+            rotZ = rotZ - 6f;
+            lootBoxImage.rectTransform.rotation = Quaternion.Euler(0, 0, rotZ);
+        }
+        lootBoxImage.sprite = GameScene.selectedCompGO.GetComponent<Comp>().compSprite;
+        lootBoxImage.transform.rotation = Quaternion.Euler(0, 0, GameScene.selectedCompRot);
+        buttonAttach.interactable = true;
+    }
+
+    // ==========================================================
     // Main menu
     private IEnumerator EnterGame() {
         StartCoroutine(EnterDapperRabbit());
