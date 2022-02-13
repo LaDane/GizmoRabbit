@@ -515,7 +515,7 @@ MonoBehaviour:
   forcePos1: {fileID: 5536849121207903935}
   forcePos2: {fileID: 5093112709763735695}
   energyDrain: 0.2
-  energyLevelPos: {fileID: 0}
+  energyLevelPos: {fileID: 6928996309056811439}
   energyLevelPrefab: {fileID: 7599322705265555565, guid: 613f0bf15881e4346bc222ef38d360f4, type: 3}
   isActivated: 0
   activationForce: 3
