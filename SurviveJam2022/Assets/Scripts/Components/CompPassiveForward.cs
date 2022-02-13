@@ -23,6 +23,10 @@ public class CompPassiveForward : MonoBehaviour {
 
     private void Update() {
         if (!comp.isPlaced) { return; }
+        if (playerController.tag.Equals("PlayerOld")) {
+            playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            playerRB = playerController.GetComponent<Comp>().ragdollRB;
+        }
 
         if (GameScene.stateFly && playerController.isFlying) {
             Vector2 direction = forcePos1.position - forcePos2.position;

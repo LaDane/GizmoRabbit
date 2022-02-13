@@ -375,6 +375,8 @@ MonoBehaviour:
   - {fileID: 5453796375662424529}
   - {fileID: 556789945048560402}
   compSprite: {fileID: 21300000, guid: 0d320a9729f988440957d375e9065028, type: 3}
+  compName: Tail Fin
+  compDescription: Wings, engine and propellar not included.
 --- !u!1001 &1588740322115699807
 PrefabInstance:
   m_ObjectHideFlags: 0

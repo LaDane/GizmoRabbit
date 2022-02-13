@@ -373,6 +373,8 @@ MonoBehaviour:
   - {fileID: 7933488989073965631}
   - {fileID: 7378213362072239492}
   compSprite: {fileID: 21300000, guid: 5e12699a2b3a5434eb31afcca0cc5d4d, type: 3}
+  compName: Portable Combustion Engine
+  compDescription: Now with even more surface area for attachments.
 --- !u!1001 &2825607436551721285
 PrefabInstance:
   m_ObjectHideFlags: 0

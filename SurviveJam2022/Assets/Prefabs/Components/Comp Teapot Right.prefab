@@ -371,6 +371,8 @@ MonoBehaviour:
   - {fileID: 8493011964485598356}
   - {fileID: 7949999767107687940}
   compSprite: {fileID: 21300000, guid: 88a74cc80f2c4f2429021b774590a3f9, type: 3}
+  compName: Teapot
+  compDescription: For when you are expecting guests.
 --- !u!1001 &7236006989164530649
 PrefabInstance:
   m_ObjectHideFlags: 0

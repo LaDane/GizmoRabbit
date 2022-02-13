@@ -366,6 +366,8 @@ MonoBehaviour:
   - {fileID: 3982403599309763486}
   - {fileID: 2814959290053770855}
   compSprite: {fileID: 21300000, guid: ce44809a88289e64b834ea33e7028988, type: 3}
+  compName: Sewing Table
+  compDescription: Because nobody wants holes in their socks!
 --- !u!1001 &2806338090102375635
 PrefabInstance:
   m_ObjectHideFlags: 0

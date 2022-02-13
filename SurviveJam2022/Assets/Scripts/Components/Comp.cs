@@ -21,6 +21,10 @@ public class Comp : MonoBehaviour {
     [Header("Sprite")]
     public Sprite compSprite;
 
+    [Header("Description")]
+    public string compName;
+    public string compDescription;
+
     private void Awake() {
         if (GameScene.stateFly) {
             StateFly();

@@ -454,6 +454,8 @@ MonoBehaviour:
   - {fileID: 8493011964485598356}
   - {fileID: 2169838114866649463}
   compSprite: {fileID: 21300000, guid: 57c3911de6a84ec40ab99205b01945c1, type: 3}
+  compName: Propellar
+  compDescription: You can never have too many.
 --- !u!114 &8504477071785375083
 MonoBehaviour:
   m_ObjectHideFlags: 0

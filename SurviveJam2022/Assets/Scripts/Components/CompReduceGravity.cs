@@ -17,6 +17,11 @@ public class CompReduceGravity : MonoBehaviour {
     }
 
     private void Update() {
+        if (playerComp != GameObject.FindGameObjectWithTag("Player").GetComponent<Comp>()) {
+            playerComp = GameObject.FindGameObjectWithTag("Player").GetComponent<Comp>();
+            changedGravity = false;
+        }
+
         if (changedGravity) { return; }
         if (comp.isPlaced) {
             changedGravity = true;

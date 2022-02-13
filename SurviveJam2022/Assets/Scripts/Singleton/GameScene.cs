@@ -34,6 +34,10 @@ public class GameScene : MonoSingleton<GameScene> {
         playerObject.tag = "Player";
         playerObject.SetActive(true);
     }
+    public static void EnterStateMainMenu() {
+        ResetStates();
+        stateMainMenu = true;
+    }
 
     // Selected Component
     public static GameObject selectedCompGO = null;

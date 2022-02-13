@@ -367,6 +367,8 @@ MonoBehaviour:
   - {fileID: 7777079452754111854}
   - {fileID: 6794653437709971917}
   compSprite: {fileID: 21300000, guid: f973e234d5ec45548949ac5958a1c15a, type: 3}
+  compName: Balloon
+  compDescription: Why aren't more people using them to fly sideways?
 --- !u!114 &2344614585824324639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,7 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   comp: {fileID: 4332530634648291675}
-  gravityReduction: 0.1
+  gravityReduction: 0.05
 --- !u!1001 &5763831455926830720
 PrefabInstance:
   m_ObjectHideFlags: 0

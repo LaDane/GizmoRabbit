@@ -33,6 +33,10 @@ public class CompActivate : MonoBehaviour {
 
     private void Update() {
         if (!comp.isPlaced) { return; }
+        if (playerController.tag.Equals("PlayerOld")) {
+            playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            playerRB = playerController.GetComponent<Comp>().ragdollRB;
+        }
 
         if (!addedText) {
             addedText = true;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 
@@ -53,6 +54,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Button buttonAttach;
     [SerializeField] private Button buttonReroll;
     [SerializeField] private Sprite rerollProcess;
+    [SerializeField] private Text textCompName;
+    [SerializeField] private Text textCompDescription;
     private bool lootBoxMenuMoving = false;
     private bool searchingForComp = false;
     //private bool lootBoxSpriteFound = false;
@@ -108,8 +111,12 @@ public class UIManager : MonoBehaviour {
                 statsDoneCounting = false;
                 lootBoxMenuMoving = true;
                 StartCoroutine(EnterLootBoxMenu());
+
                 lootBoxImage.sprite = GameScene.selectedCompGO.GetComponent<Comp>().compSprite;
                 lootBoxImage.transform.rotation = Quaternion.Euler(0, 0, GameScene.selectedCompRot);
+
+                textCompName.text = GameScene.selectedCompGO.GetComponent<Comp>().compName;
+                textCompDescription.text = GameScene.selectedCompGO.GetComponent<Comp>().compDescription;
             }
         }
         else {
@@ -155,15 +162,24 @@ public class UIManager : MonoBehaviour {
         float d = 0f;
         float hs = oldHS;
 
+        int plusModifier = ((int) GameScene.distanceHighscore / 500) + 2;
+        //Debug.Log("plusModifier = " + plusModifier);
+
         while (d != distanceTraveled || hs != GameScene.distanceHighscore) {
             yield return new WaitForFixedUpdate();
             if (d != distanceTraveled) {
-                d++;
+                d = d + plusModifier;
+                if (d > distanceTraveled) {
+                    d = distanceTraveled;
+                }
                 statsDistance.text = d + " METERS";
             }
             if (d > oldHS && hs != GameScene.distanceHighscore) {
-                hs++;
+                hs = hs + plusModifier;
                 statsHighscore.text = hs + " METERS";
+                if (hs > GameScene.distanceHighscore) {
+                    hs = GameScene.distanceHighscore;
+                }
                 if (!displayingNewRecordImage) {
                     displayingNewRecordImage = true;
                     StartCoroutine(StartNewRecordImageScaling());
@@ -227,6 +243,8 @@ public class UIManager : MonoBehaviour {
         buttonReroll.interactable = false;
         buttonAttach.interactable = false;
         lootBoxImage.sprite = rerollProcess;
+        textCompName.text = "Rerolling";
+        textCompDescription.text = " ";
         StartCoroutine(StartRerollComponent());
     }
 
@@ -248,6 +266,14 @@ public class UIManager : MonoBehaviour {
         lootBoxImage.sprite = GameScene.selectedCompGO.GetComponent<Comp>().compSprite;
         lootBoxImage.transform.rotation = Quaternion.Euler(0, 0, GameScene.selectedCompRot);
         buttonAttach.interactable = true;
+
+        textCompName.text = GameScene.selectedCompGO.GetComponent<Comp>().compName;
+        textCompDescription.text = GameScene.selectedCompGO.GetComponent<Comp>().compDescription;
+    }
+
+    public void HomeButton() {
+        GameScene.EnterStateMainMenu();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     // ==========================================================

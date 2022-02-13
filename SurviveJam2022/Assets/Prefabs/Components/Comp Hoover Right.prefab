@@ -462,6 +462,8 @@ MonoBehaviour:
   - {fileID: 1317879823723897815}
   - {fileID: 7853865585047357539}
   compSprite: {fileID: 21300000, guid: a3fdbf4ab4ee0c54890f980d3e3fab5d, type: 3}
+  compName: Atomic Hoover
+  compDescription: Movement by vacuum force. Next stop - The Moon!
 --- !u!114 &8504477071785375083
 MonoBehaviour:
   m_ObjectHideFlags: 0

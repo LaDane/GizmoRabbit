@@ -463,6 +463,8 @@ MonoBehaviour:
   - {fileID: 4135663537682677033}
   - {fileID: 487496145528169130}
   compSprite: {fileID: 21300000, guid: 9f763662c9f24e74fb819e5f4fb1debb, type: 3}
+  compName: Modified Shower Head
+  compDescription: Increased water pressure for maximum power. Patent Pending.
 --- !u!114 &8504477071785375083
 MonoBehaviour:
   m_ObjectHideFlags: 0

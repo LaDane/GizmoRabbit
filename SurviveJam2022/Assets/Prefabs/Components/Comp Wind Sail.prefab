@@ -462,6 +462,9 @@ MonoBehaviour:
   - {fileID: 847844404040939243}
   - {fileID: 3925103601940253645}
   compSprite: {fileID: 21300000, guid: 467992038d552e1449c9bddbb5f31f32, type: 3}
+  compName: Wind Sail
+  compDescription: Adds extra forward momentum. If it works on a boat, it works on
+    a bike!
 --- !u!114 &6431055056105578594
 MonoBehaviour:
   m_ObjectHideFlags: 0

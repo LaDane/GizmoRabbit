@@ -298,6 +298,8 @@ MonoBehaviour:
   - {fileID: 185150188052077700}
   - {fileID: 8157243124325558876}
   compSprite: {fileID: 21300000, guid: 65ed6129c4360da4d93cad9697d11bfd, type: 3}
+  compName: Cart with Passenger
+  compDescription: Two is a company, three's a crowd.
 --- !u!1 &8470117828961987330
 GameObject:
   m_ObjectHideFlags: 0

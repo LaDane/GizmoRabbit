@@ -277,6 +277,8 @@ MonoBehaviour:
   - {fileID: 8493011964485598356}
   - {fileID: 4753868594726371703}
   compSprite: {fileID: 21300000, guid: 3139a0944468a4e4885da824b68413e5, type: 3}
+  compName: Gramophone
+  compDescription: State of the art music player. Plays sweet tunes.
 --- !u!1 &8595861006742204069
 GameObject:
   m_ObjectHideFlags: 0
