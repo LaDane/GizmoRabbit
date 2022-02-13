@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7850440760616304412}
   - component: {fileID: 1590573966289252697}
   m_Layer: 0
-  m_Name: Particles Water
+  m_Name: Particles Hoover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -606,7 +606,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.88
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
