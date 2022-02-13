@@ -13,9 +13,12 @@ public class CompActivate : MonoBehaviour {
     [SerializeField] private Transform forcePos2;
 
     [Header("Energy Levels")]
-    [SerializeField] private GameObject energyLevelsIndicatorParent;
+    [SerializeField] private float energyDrain = 0.2f;
+    [SerializeField] private Transform energyLevelPos;
     [SerializeField] private GameObject energyLevelPrefab;
-    private Transform energyLevelBar;
+    private float energyValue = 1f;
+    private Transform energyLevelsIndicatorParent;
+    private GameObject energyLevelBar;
     private Slider energySlider;
 
     [Header("States")]
@@ -39,11 +42,16 @@ public class CompActivate : MonoBehaviour {
     }
 
     private void Start() {
-        
+        energyLevelsIndicatorParent = GameObject.FindGameObjectWithTag("EnergyLevels").transform;
+        energyLevelBar = Instantiate(energyLevelPrefab, energyLevelsIndicatorParent);
+        energySlider = energyLevelBar.GetComponentInChildren<Slider>();
+        energyLevelBar.SetActive(false);
+        energyValue = 1f;
     }
 
     private void Update() {
         if (!comp.isPlaced) { return; }
+
         if (playerController.tag.Equals("PlayerOld")) {
             playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
             playerRB = playerController.GetComponent<Comp>().ragdollRB;
@@ -63,9 +71,21 @@ public class CompActivate : MonoBehaviour {
             letterGO.transform.position = letterPos.position;
         }
 
-        if (GameScene.stateFly && playerController.isFlying) {
+        if (GameScene.stateFly) {
+            if (!energyLevelBar.activeInHierarchy) {
+                energyLevelBar.SetActive(true);
+            }
+            energyLevelBar.transform.position = energyLevelPos.position;
+            energyLevelBar.transform.rotation = transform.rotation;
 
-            if (Input.GetKey(activationChar.ToString())) {
+        }
+        else if (!GameScene.stateFly && energyLevelBar.activeInHierarchy) {
+            energyLevelBar.SetActive(false);
+        }
+
+        if (GameScene.stateFly && playerController.isFlying) {
+            Debug.Log(energyValue);
+            if (Input.GetKey(activationChar.ToString()) && energyValue >= 0.01f) {
                 isActivated = true;
                 if (particles != null && !particles.isPlaying) {
                     particles.Play();
@@ -86,6 +106,9 @@ public class CompActivate : MonoBehaviour {
                     return;
                 }
                 playerRB.AddForce(direction.normalized * activationForce);
+
+                energyValue = energyValue - (energyDrain * Time.deltaTime);
+                energySlider.value = energyValue;
             }
         }
         else {
