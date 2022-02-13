@@ -8,6 +8,8 @@ TagManager:
   - PlayerClone
   - PlayerOld
   - EnergyLevels
+  - JumpSound
+  - AudioManager
   layers:
   - Default
   - TransparentFX

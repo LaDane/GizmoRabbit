@@ -1623,7 +1623,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6cb80a43f05c09444a47285f2b66ef7f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.062
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -3496,6 +3496,63 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 20
   m_TargetDisplay: 0
+--- !u!1 &1022545064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1022545065}
+  - component: {fileID: 1022545066}
+  m_Layer: 0
+  m_Name: Trigger Jump Sound
+  m_TagString: JumpSound
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1022545065
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022545064}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.53, y: -3.92, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1696081311}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1022545066
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022545064}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.45440292, y: 1.4682021}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.39785767, y: 5.6510916}
+  m_EdgeRadius: 0
 --- !u!1 &1028239043
 GameObject:
   m_ObjectHideFlags: 0
@@ -5899,6 +5956,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1407559417}
+  - {fileID: 1022545065}
   m_Father: {fileID: 2034444936}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6981,7 +7039,7 @@ GameObject:
   - component: {fileID: 1825977431}
   m_Layer: 0
   m_Name: AudioManager
-  m_TagString: Untagged
+  m_TagString: AudioManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7001,33 +7059,39 @@ MonoBehaviour:
   sounds:
   - name: BikeJump
     clip: {fileID: 8300000, guid: 41de8bf48a6ff394a91c5394ed48293d, type: 3}
-    volume: 1
+    volume: 0.67
     pitch: 1
+    loop: 0
     source: {fileID: 0}
   - name: BikeRide
     clip: {fileID: 8300000, guid: 4f43c10b3e4274c47aa96194234127ba, type: 3}
     volume: 1
     pitch: 1
+    loop: 0
     source: {fileID: 0}
   - name: BikeBell
     clip: {fileID: 8300000, guid: 6faf438c719056e48813916c53385371, type: 3}
-    volume: 1
+    volume: 0.831
     pitch: 1
+    loop: 0
     source: {fileID: 0}
   - name: Crash
     clip: {fileID: 8300000, guid: 5b4e221c652c1544bbf892af9b6e937b, type: 3}
-    volume: 1
+    volume: 0.74
     pitch: 1
+    loop: 0
     source: {fileID: 0}
   - name: Flying
     clip: {fileID: 8300000, guid: d686d05d1fd88cf4ea2c80961dde5a24, type: 3}
-    volume: 1
+    volume: 0.831
     pitch: 1
+    loop: 1
     source: {fileID: 0}
   - name: Propellar
     clip: {fileID: 8300000, guid: f2536f0cb3981654ea8f65a7560a7654, type: 3}
     volume: 1
     pitch: 1
+    loop: 0
     source: {fileID: 0}
 --- !u!4 &1825977432
 Transform:
