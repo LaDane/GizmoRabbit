@@ -64,7 +64,10 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Transform statsMenu;
     [SerializeField] private Text statsDistance;
     [SerializeField] private Text statsHighscore;
+    [SerializeField] private Transform newRecordImage;
     private bool statsDoneCounting = false;
+    private bool displayingNewRecordImage = false;
+    private Vector3 newRecordImageOriginalScale;
 
 
     private void Start() {
@@ -73,6 +76,9 @@ public class UIManager : MonoBehaviour {
 
         mainCamera.orthographicSize = mainMenuCameraZoom;
         cameraOriginalPos = mainCamera.transform.position;
+
+        newRecordImageOriginalScale = newRecordImage.localScale;
+        newRecordImage.localScale = Vector3.zero;
 
         StartCoroutine(EnterGame());
     }
@@ -158,10 +164,26 @@ public class UIManager : MonoBehaviour {
             if (d > oldHS && hs != GameScene.distanceHighscore) {
                 hs++;
                 statsHighscore.text = hs + " METERS";
+                if (!displayingNewRecordImage) {
+                    displayingNewRecordImage = true;
+                    StartCoroutine(StartNewRecordImageScaling());
+                }
             }
         }
         yield return new WaitForSeconds(1f);
         statsDoneCounting = true;
+    }
+
+    private IEnumerator StartNewRecordImageScaling() {
+        float sTime = Time.time;
+        while (newRecordImage.localScale != newRecordImageOriginalScale) {
+            yield return new WaitForFixedUpdate();
+            float t = (Time.time - sTime) / 0.5f;
+            newRecordImage.localScale = new Vector3(
+                Mathf.SmoothStep(0f, newRecordImageOriginalScale.x, t), 
+                Mathf.SmoothStep(0f, newRecordImageOriginalScale.y, t),
+                newRecordImageOriginalScale.z);
+        }
     }
 
     // Loot box attach component button press function
@@ -173,6 +195,9 @@ public class UIManager : MonoBehaviour {
         }
         StartCoroutine(RemoveLootBoxMenu());
         statsMenu.localPosition = new Vector3(0f, -700, 0f);
+
+        displayingNewRecordImage = false;
+        newRecordImage.localScale = Vector3.zero;
     }
 
     // Loot box menu
@@ -216,7 +241,6 @@ public class UIManager : MonoBehaviour {
         while (GameScene.selectedCompGO == oldComp || ((int)ts.TotalMilliseconds) < 2000) {
             yield return new WaitForFixedUpdate();
             ts = System.DateTime.UtcNow - startTime;
-            Debug.Log(ts.TotalMilliseconds);
 
             rotZ = rotZ - 6f;
             lootBoxImage.rectTransform.rotation = Quaternion.Euler(0, 0, rotZ);
