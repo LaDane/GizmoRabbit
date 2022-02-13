@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CompActivate : MonoBehaviour {
 
@@ -10,6 +11,12 @@ public class CompActivate : MonoBehaviour {
     [SerializeField] private ParticleSystem particles;
     [SerializeField] private Transform forcePos1;
     [SerializeField] private Transform forcePos2;
+
+    [Header("Energy Levels")]
+    [SerializeField] private GameObject energyLevelsIndicatorParent;
+    [SerializeField] private GameObject energyLevelPrefab;
+    private Transform energyLevelBar;
+    private Slider energySlider;
 
     [Header("States")]
     public bool isActivated = false;
@@ -29,6 +36,10 @@ public class CompActivate : MonoBehaviour {
         if (particles != null) {
             particles.Stop();
         }
+    }
+
+    private void Start() {
+        
     }
 
     private void Update() {

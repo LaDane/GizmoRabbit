@@ -483,6 +483,8 @@ MonoBehaviour:
   particles: {fileID: 4976018400257848126}
   forcePos1: {fileID: 4351120017542821977}
   forcePos2: {fileID: 5690503208308450689}
+  EnergyLevelsIndicatorParent: {fileID: 0}
+  EnergyLevelPrefab: {fileID: 7599322705265555565, guid: 613f0bf15881e4346bc222ef38d360f4, type: 3}
   isActivated: 0
   activationForce: 3
 --- !u!1001 &1690437897892599271
