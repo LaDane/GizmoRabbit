@@ -35,6 +35,7 @@ public class GameScene : MonoSingleton<GameScene> {
         playerObject.SetActive(true);
     }
     public static void EnterStateMainMenu() {
+        GameObject.FindGameObjectWithTag("Player").transform.position = playerOriginalPos;
         ResetStates();
         stateMainMenu = true;
     }
@@ -55,6 +56,7 @@ public class GameScene : MonoSingleton<GameScene> {
     // Player clone
     public static GameObject playerObject;
     public static GameObject playerObjectClone;
+    private static Vector3 playerOriginalPos;
 
     // Highscore
     public static float distanceHighscore = 0f;
@@ -66,6 +68,7 @@ public class GameScene : MonoSingleton<GameScene> {
 
     private void Start() {
         playerObject = GameObject.FindGameObjectWithTag("Player");
+        playerOriginalPos = playerObject.transform.position;
     }
 
     private static void FillAvailableChars() {
