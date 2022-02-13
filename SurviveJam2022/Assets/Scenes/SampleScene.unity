@@ -462,8 +462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc98a68f1a6315448aff8570054fc0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  getSpecificComp: 1
-  specificComp: {fileID: 6190954705831030533, guid: 51c7d39cc6b4ee0429f904c94d85c8f1, type: 3}
+  getSpecificComp: 0
+  specificComp: {fileID: 6190954705831030533, guid: 91714705ecb718640a1dc1048ed1f3d9, type: 3}
   specificRotation: -80
   playerController: {fileID: 1703224301}
   playerComp: {fileID: 1703224305}
