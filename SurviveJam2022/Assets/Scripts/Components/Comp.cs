@@ -67,6 +67,9 @@ public class Comp : MonoBehaviour {
 
             if (!GameScene.stateLootCrate) {
                 GameScene.EnterStateLootCrate();
+                AudioManager am = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+                am.Stop("Flying");
+                am.Play("Crash");
             }
             //GameScene.ResetStates();
             //GameScene.stateLootCrate = true;

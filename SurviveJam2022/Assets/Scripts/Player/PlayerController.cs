@@ -26,9 +26,14 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform altitudeMeasurePoint;
     //public int distanceFlown = 0;
 
+    [Header("Audio")]
+    [SerializeField] private AudioManager audioManager;
+    private bool audioBellPlayed = false;
+    private bool audioFlyPlaying = false;
+    private bool audioRidePlaying = false;
+
     [Header("Attached Components")]
     public List<Comp> compList = new List<Comp>();
-
 
     private void Start() {
         //EnterFlyState();
@@ -39,8 +44,26 @@ public class PlayerController : MonoBehaviour {
         DetectGameStateChange();
         HandleRotation();
 
+        if (!isFlying && audioFlyPlaying) {
+            //audioManager.Stop("Flying");
+            audioFlyPlaying = false;
+        }
+
+        if (Input.GetKey(KeyCode.W) && !audioRidePlaying) {
+            audioRidePlaying = true;
+            audioManager.Play("BikeRide");
+        }
+        else if (!Input.GetKey(KeyCode.W)) {
+            audioRidePlaying = false;
+            audioManager.Stop("BikeRide");
+        }
+
         if (GameScene.stateFly) {
             ClampAngularVelocity();
+            if (!audioBellPlayed) {
+                audioBellPlayed = true;
+                audioManager.Play("BikeBell");
+            }
 
             // Move player forward when grounded
             if (!isFlying && Input.GetKey(KeyCode.W)) {
@@ -50,10 +73,15 @@ public class PlayerController : MonoBehaviour {
 
             if (isFlying) {
                 MeasureDistanceAltitude();
+                if (!audioFlyPlaying) {
+                    audioFlyPlaying = true;
+                    audioManager.Play("Flying");
+                }
             }
         }
 
         if (GameScene.statePlaceComponent) {
+            audioBellPlayed = false;
             isFlying = false;
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
@@ -151,6 +179,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.tag.Equals("JumpSound")) {
+            audioManager.Play("BikeJump");
+            return;
+        }
+
         isFlying = true;
         comp.ragdollRB.AddForce(transform.right * 20f, ForceMode2D.Impulse);
     }
