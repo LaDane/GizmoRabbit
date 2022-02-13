@@ -76,6 +76,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject placeComponentHomeButton;
     [SerializeField] private GameObject componentPlacementGuide;
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+
 
     private void Start() {
         howToPlayOriginalPos = howToPlayMenu.localPosition;
@@ -300,6 +303,7 @@ public class UIManager : MonoBehaviour {
     // ==========================================================
     // Main menu
     private IEnumerator EnterGame() {
+        animator.Play("Riding");
         StartCoroutine(EnterDapperRabbit());
         yield return new WaitForSeconds(0.122f);
         StartCoroutine(EnterMainMenuButton(buttonPlayGame));
@@ -335,6 +339,8 @@ public class UIManager : MonoBehaviour {
             float t = (Time.time - sTime) / dapperAnimateTime;
             dapperRabbitSprite.localPosition = new Vector3(Mathf.SmoothStep(startXPos, originalXPos, t), dapperRabbitSprite.localPosition.y, dapperRabbitSprite.localPosition.z);
         }
+        Debug.Log("HERE");
+        animator.Play("Idle");
     }
 
     // How to play & Settings
@@ -369,6 +375,7 @@ public class UIManager : MonoBehaviour {
 
     private IEnumerator AnimatePlay() {
         yield return new WaitForFixedUpdate();
+        animator.Play("Riding");
         StartCoroutine(ExitDapperRabbit());
 
         StartCoroutine(ExitMainMenuButton(buttonExit));
@@ -391,6 +398,7 @@ public class UIManager : MonoBehaviour {
             float t = (Time.time - sTime) / dapperAnimateTime;
             dapperRabbitSprite.localPosition = new Vector3(Mathf.SmoothStep(startXPos, endXPos, t), dapperRabbitSprite.localPosition.y, dapperRabbitSprite.localPosition.z);
         }
+        animator.Play("Idle");
         dapperRabbitSprite.gameObject.SetActive(false);
     }
 
