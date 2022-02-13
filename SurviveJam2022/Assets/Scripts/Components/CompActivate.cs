@@ -12,7 +12,7 @@ public class CompActivate : MonoBehaviour {
     [SerializeField] private Transform forcePos2;
 
     [Header("States")]
-    [SerializeField] private bool isActivated = false;
+    public bool isActivated = false;
 
     [Header("Adjustable Variables")]
     [SerializeField] private float activationForce = 3f;

@@ -113,6 +113,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6769026698687874603}
+  - {fileID: 1144476860974037367}
   m_Father: {fileID: 5010909516575037831}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -192,7 +193,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6769026698687874603
 Transform:
   m_ObjectHideFlags: 0
@@ -334,6 +335,7 @@ GameObject:
   - component: {fileID: 7202882750497446376}
   - component: {fileID: 4332530634648291675}
   - component: {fileID: 8504477071785375083}
+  - component: {fileID: 5911904964386794424}
   m_Layer: 7
   m_Name: Comp Propellar
   m_TagString: Untagged
@@ -476,6 +478,22 @@ MonoBehaviour:
   forcePos2: {fileID: 8719031613522442539}
   isActivated: 0
   activationForce: 5
+--- !u!114 &5911904964386794424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6190954705831030533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29ef0474eb98144790daf1469f65d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1144476860974037321}
+  compActive: {fileID: 8504477071785375083}
+  idleName: PropIdle
+  movingName: PropSpinning
 --- !u!1001 &1128885228779204154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -542,6 +560,81 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1276290448099063618, guid: 8e7b75ecbe549c746854dc2360ced66b, type: 3}
   m_PrefabInstance: {fileID: 1128885228779204154}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5478779368342609982
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6364468878300446805}
+    m_Modifications:
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.318
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893573771372140916, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+      propertyPath: m_Name
+      value: PropellarSpinning
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+--- !u!95 &1144476860974037321 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4893573771372140919, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+  m_PrefabInstance: {fileID: 5478779368342609982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1144476860974037367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4893573771372140873, guid: 9b5fe74d3c29f4d48af7dc106f96100d, type: 3}
+  m_PrefabInstance: {fileID: 5478779368342609982}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7236006989164530649
 PrefabInstance:

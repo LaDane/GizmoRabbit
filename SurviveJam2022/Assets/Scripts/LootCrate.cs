@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class LootCrate : MonoBehaviour {
 
+    [Header("Test")]
+    [SerializeField] private bool getSpecificComp = false;
+    [SerializeField] private GameObject specificComp = null;
+    [SerializeField] private float specificRotation = -90;
+
+    [Header("Drag")]
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Comp playerComp;
     [SerializeField] private Comps comps;
@@ -20,6 +26,12 @@ public class LootCrate : MonoBehaviour {
     }
 
     public IEnumerator GetNextComponent() {
+        //if (getSpecificComp && specificComp != null) {
+        //    GameScene.selectedCompRot = specificRotation;
+        //    GameScene.selectedCompGO = specificComp;
+        //    yield break;
+        //}
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
         playerComp = player.GetComponent<Comp>();
@@ -74,6 +86,12 @@ public class LootCrate : MonoBehaviour {
                         GameScene.selectedCompGO = componentPrefab;
                         System.TimeSpan ts = System.DateTime.UtcNow - startTime;
                         Debug.Log(component.name + " can be placed at : " + component.transform.position + "\tDuration seconds : "+ (ts.TotalMilliseconds / 1000).ToString("0.00"));
+
+                        if (getSpecificComp && specificComp != null) {
+                            GameScene.selectedCompRot = specificRotation;
+                            GameScene.selectedCompGO = specificComp;
+                        }
+
                         yield break;
                     }
                 }
