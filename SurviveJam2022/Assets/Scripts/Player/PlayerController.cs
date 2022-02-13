@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviour {
     private bool audioFlyPlaying = false;
     private bool audioRidePlaying = false;
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    private bool animRidingPlaying = false;
+
     [Header("Attached Components")]
     public List<Comp> compList = new List<Comp>();
 
@@ -47,6 +51,13 @@ public class PlayerController : MonoBehaviour {
         if (!isFlying && audioFlyPlaying) {
             //audioManager.Stop("Flying");
             audioFlyPlaying = false;
+        }
+
+        if (Input.GetKey(KeyCode.W) && !animRidingPlaying) {
+            animator.Play("Riding");
+        }
+        else if (!Input.GetKey(KeyCode.W)) {
+            animator.Play("Idle");
         }
 
         if (Input.GetKey(KeyCode.W) && !audioRidePlaying) {
