@@ -44,6 +44,7 @@ public class CompActivate : MonoBehaviour {
             activationChar = GameScene.GetRandomLetter();
             letterGO.GetComponent<GetLetterSprite>().SetActivationLetter(activationChar);
             //letterGO.GetComponent<TextMesh>().text = activationChar.ToString().ToUpper();
+            letterGO.GetComponent<DestroyLetter>().playerGO = GameObject.FindGameObjectWithTag("Player").gameObject;
             letterGO.GetComponent<DestroyLetter>().attachedGameObject = gameObject;
         }
 

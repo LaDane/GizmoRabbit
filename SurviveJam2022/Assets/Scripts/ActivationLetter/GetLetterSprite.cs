@@ -33,32 +33,6 @@ public class GetLetterSprite : MonoBehaviour {
 
     public Dictionary<char, Sprite> letterSpriteDict = new Dictionary<char, Sprite>();
 
-    //private void Start() {
-    //    letterSpriteDict.Add('b', sB);
-    //    letterSpriteDict.Add('c', sC);
-    //    letterSpriteDict.Add('e', sE);
-    //    letterSpriteDict.Add('f', sF);
-    //    letterSpriteDict.Add('g', sG);
-    //    letterSpriteDict.Add('h', sH);
-    //    letterSpriteDict.Add('i', sI);
-    //    letterSpriteDict.Add('j', sJ);
-    //    letterSpriteDict.Add('k', sK);
-    //    letterSpriteDict.Add('l', sL);
-    //    letterSpriteDict.Add('m', sM);
-    //    letterSpriteDict.Add('n', sN);
-    //    letterSpriteDict.Add('o', sO);
-    //    letterSpriteDict.Add('p', sP);
-    //    letterSpriteDict.Add('q', sQ);
-    //    letterSpriteDict.Add('r', sR);
-    //    letterSpriteDict.Add('s', sS);
-    //    letterSpriteDict.Add('t', sT);
-    //    letterSpriteDict.Add('u', sU);
-    //    letterSpriteDict.Add('v', sV);
-    //    letterSpriteDict.Add('x', sX);
-    //    letterSpriteDict.Add('y', sY);
-    //    letterSpriteDict.Add('z', sZ);
-    //}
-
     public void SetActivationLetter(char c) {
         letterSpriteDict.Add('b', sB);
         letterSpriteDict.Add('c', sC);
@@ -84,10 +58,6 @@ public class GetLetterSprite : MonoBehaviour {
         letterSpriteDict.Add('y', sY);
         letterSpriteDict.Add('z', sZ);
 
-        //Debug.Log("dict size = " + letterSpriteDict.Count);
-        //Debug.Log("contains key : " + c + "\t" + letterSpriteDict.ContainsKey(c));
-        //Debug.Log("Activation letter = " + c +"\t type = " + c.GetType());
-        //Sprite letterSprite = letterSpriteDict[c];
         Sprite letterSprite = null;
         letterSpriteDict.TryGetValue(c, out letterSprite);
         if (letterSprite != null) {
