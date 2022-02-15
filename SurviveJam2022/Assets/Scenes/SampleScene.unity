@@ -1655,8 +1655,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1703224302}
+  mainCamera: {fileID: 519420031}
   cameraPos: {x: 0, y: 0, z: 0}
-  followPlayer: 0
+  cameraFollowingPlayer: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -2659,7 +2660,7 @@ GameObject:
   - component: {fileID: 730631284}
   m_Layer: 0
   m_Name: Buildings
-  m_TagString: Untagged
+  m_TagString: Cityblocks
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3298,7 +3299,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &955857163
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3315,7 +3316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 284.99997, y: 120.100006}
+  m_AnchoredPosition: {x: 284.99997, y: -579.9}
   m_SizeDelta: {x: 311.76, y: 59.362}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &955857164
@@ -5479,7 +5480,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1584083019
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5496,7 +5497,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 284.99997, y: 210.1}
+  m_AnchoredPosition: {x: 284.99997, y: -489.9}
   m_SizeDelta: {x: 311.76, y: 59.362}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1584083020
@@ -5805,8 +5806,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651587785}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.26, y: 4968.2, z: 0}
-  m_LocalScale: {x: 13.43, y: 9999, z: 1}
+  m_LocalPosition: {x: -17.06, y: 4968.2, z: 0}
+  m_LocalScale: {x: 2, y: 9999, z: 1}
   m_Children: []
   m_Father: {fileID: 1866185743}
   m_RootOrder: 1
@@ -6185,7 +6186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1702238233
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6202,7 +6203,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 285, y: 33}
+  m_AnchoredPosition: {x: 285, y: -667}
   m_SizeDelta: {x: 311.76, y: 59.362}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1702238234
@@ -6908,13 +6909,8 @@ PolygonCollider2D:
       - {x: -0.2771772, y: 57.820717}
       - {x: -3.956381, y: 58.213203}
       - {x: -8.929071, y: 58.462727}
-      - {x: -31.39721, y: 58.507103}
-      - {x: -60.4347, y: 58.602562}
-      - {x: -61.722454, y: 119.60971}
-      - {x: 131.2742, y: 124.12062}
-      - {x: 129.72574, y: 160.45374}
-      - {x: -103.50393, y: 153.71092}
-      - {x: -104.10894, y: 25.404617}
+      - {x: -136.33371, y: 58.1979}
+      - {x: -137.35559, y: 14.963648}
 --- !u!50 &1734581538
 Rigidbody2D:
   serializedVersion: 4

@@ -9,6 +9,7 @@ public class GameScene : MonoSingleton<GameScene> {
     public static bool stateFly = false;
     public static bool statePlaceComponent = false;
     public static bool stateLootCrate = false;
+    public static string stateCurrent = "Menu";
     public static void ResetStates() {
         stateFly = false;
         statePlaceComponent = false;
@@ -17,6 +18,7 @@ public class GameScene : MonoSingleton<GameScene> {
     public static void EnterStateFly() {
         ResetStates();
         stateFly = true;
+        stateCurrent = "Fly";
         playerObjectClone = Instantiate(playerObject, playerObject.transform.position, playerObject.transform.rotation);
         playerObjectClone.tag = "PlayerClone";
         playerObjectClone.SetActive(false);
@@ -24,10 +26,13 @@ public class GameScene : MonoSingleton<GameScene> {
     public static void EnterStatePlaceComponent() {
         ResetStates();
         statePlaceComponent = true;
+        stateCurrent = "PlaceComponent";
+        timesPlayed++;
     }
     public static void EnterStateLootCrate() {
         ResetStates();
         stateLootCrate = true;
+        stateCurrent = "LootCrate";
         playerObject.tag = "PlayerOld";
         //Destroy(playerObject);
         playerObject = playerObjectClone;
@@ -35,9 +40,13 @@ public class GameScene : MonoSingleton<GameScene> {
         playerObject.SetActive(true);
     }
     public static void EnterStateMainMenu() {
+        componentsPlaced = 0;
+        timesPlayed = 0;
+
         GameObject.FindGameObjectWithTag("Player").transform.position = playerOriginalPos;
         ResetStates();
         stateMainMenu = true;
+        stateCurrent = "Menu";
     }
 
     // Selected Component
@@ -58,8 +67,10 @@ public class GameScene : MonoSingleton<GameScene> {
     public static GameObject playerObjectClone;
     private static Vector3 playerOriginalPos;
 
-    // Highscore
+    // stats
     public static float distanceHighscore = 0f;
+    public static int componentsPlaced = 0;
+    public static int timesPlayed = 0;
 
 
     private void Awake() {
@@ -69,6 +80,10 @@ public class GameScene : MonoSingleton<GameScene> {
     private void Start() {
         playerObject = GameObject.FindGameObjectWithTag("Player");
         playerOriginalPos = playerObject.transform.position;
+    }
+
+    public static void ResetPlayerPosition() {
+        playerObject.transform.position = playerOriginalPos;
     }
 
     private static void FillAvailableChars() {

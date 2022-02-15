@@ -30,25 +30,28 @@ public class CompNode : MonoBehaviour {
     }
 
     private void Update() {
+        if (!gameObject.activeInHierarchy) { return; }
         if (occupied) {
             gameObject.SetActive(false);
             return;
         }
 
-        if (GameScene.statePlaceComponent) {
-            CheckOverlap();
-        }
+        //if (GameScene.statePlaceComponent) {
+        //    CheckOverlap();
+        //}
     }
 
 
     private void OnMouseOver() {
         if (GameScene.selectedCompGO == null) { return; }
-        if (!GameScene.canPlaceComponent) {
-            spriteRenderer.color = Color.red;
-            return; 
-        } else {
-            spriteRenderer.color = Color.white;
-        }
+        //if (!GameScene.canPlaceComponent) {
+        //    spriteRenderer.color = Color.red;
+        //    return; 
+        //} else {
+        //    spriteRenderer.color = Color.white;
+        //}
+
+        spriteRenderer.color = Color.white;
 
         if (Input.GetMouseButtonDown(0)) {
             StartCoroutine(PlaceComponent());
@@ -62,27 +65,25 @@ public class CompNode : MonoBehaviour {
 
     private IEnumerator PlaceComponent() {
         yield return new WaitForSeconds(0.5f);
-        if (GameScene.canPlaceComponent) {
-            GameObject component = Instantiate(GameScene.selectedCompGO, 
-                placementPos.position, 
-                Quaternion.Euler(0, 0, GameScene.selectedCompRot), 
-                playerComp.transform);
-                //transform.parent.parent);
+        GameObject component = Instantiate(GameScene.selectedCompGO, 
+            placementPos.position, 
+            Quaternion.Euler(0, 0, GameScene.selectedCompRot), 
+            playerComp.transform);
 
-            Comp comp = component.GetComponent<Comp>();
-            GameScene.selectedCompGO = null;
-            GameObject[] playerTag = GameObject.FindGameObjectsWithTag("Player");
-            playerTag[0].GetComponent<PlayerController>().compList.Add(comp);
-            occupied = true;
+        Comp comp = component.GetComponent<Comp>();
+        GameScene.selectedCompGO = null;
+        GameObject[] playerTag = GameObject.FindGameObjectsWithTag("Player");
+        playerTag[0].GetComponent<PlayerController>().compList.Add(comp);
+        occupied = true;
 
-            comp.joint.connectedBody = playerComp.ragdollRB;
-            //comp.joint.connectedBody = transform.parent.parent.GetComponent<Rigidbody2D>();
-            comp.isPlaced = true;
+        comp.joint.connectedBody = playerComp.ragdollRB;
+        comp.isPlaced = true;
 
-            GameScene.EnterStateFly();
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.GetComponent<PlayerController>().EnterFlyState();
-        }
+        GameScene.EnterStateFly();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerController>().EnterFlyState();
+
+        GameScene.componentsPlaced++;
     }
 
     private void CheckOverlap() {

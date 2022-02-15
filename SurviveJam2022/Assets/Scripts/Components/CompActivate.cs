@@ -14,12 +14,12 @@ public class CompActivate : MonoBehaviour {
 
     [Header("Energy Levels")]
     [SerializeField] private float energyDrain = 0.2f;
-    [SerializeField] private Transform energyLevelPos;
+    public Transform energyLevelPos;
     [SerializeField] private GameObject energyLevelPrefab;
-    private float energyValue = 1f;
+    public float energyValue = 1f;
     private Transform energyLevelsIndicatorParent;
     private GameObject energyLevelBar;
-    private Slider energySlider;
+    //private Slider energySlider;
 
     [Header("States")]
     public bool isActivated = false;
@@ -42,10 +42,10 @@ public class CompActivate : MonoBehaviour {
     }
 
     private void Start() {
+        if (!comp.isPlaced) { return; }
         energyLevelsIndicatorParent = GameObject.FindGameObjectWithTag("EnergyLevels").transform;
-        energyLevelBar = Instantiate(energyLevelPrefab, energyLevelsIndicatorParent);
-        energySlider = energyLevelBar.GetComponentInChildren<Slider>();
-        energyLevelBar.SetActive(false);
+        energyLevelBar = Instantiate(energyLevelPrefab, new Vector3(-100, -100, -100), Quaternion.identity, energyLevelsIndicatorParent);
+        energyLevelBar.GetComponent<EnergyLevel>().compActivate = this;
         energyValue = 1f;
     }
 
@@ -62,7 +62,6 @@ public class CompActivate : MonoBehaviour {
             letterGO = Instantiate(letterPrefab, letterPos.position, Quaternion.Euler(0, 0, 0));
             activationChar = GameScene.GetRandomLetter();
             letterGO.GetComponent<GetLetterSprite>().SetActivationLetter(activationChar);
-            //letterGO.GetComponent<TextMesh>().text = activationChar.ToString().ToUpper();
             letterGO.GetComponent<DestroyLetter>().playerGO = GameObject.FindGameObjectWithTag("Player").gameObject;
             letterGO.GetComponent<DestroyLetter>().attachedGameObject = gameObject;
         }
@@ -71,20 +70,7 @@ public class CompActivate : MonoBehaviour {
             letterGO.transform.position = letterPos.position;
         }
 
-        if (GameScene.stateFly) {
-            if (!energyLevelBar.activeInHierarchy) {
-                energyLevelBar.SetActive(true);
-            }
-            energyLevelBar.transform.position = energyLevelPos.position;
-            energyLevelBar.transform.rotation = transform.rotation;
-
-        }
-        else if (!GameScene.stateFly && energyLevelBar.activeInHierarchy) {
-            energyLevelBar.SetActive(false);
-        }
-
         if (GameScene.stateFly && playerController.isFlying) {
-            Debug.Log(energyValue);
             if (Input.GetKey(activationChar.ToString()) && energyValue >= 0.01f) {
                 isActivated = true;
                 if (particles != null && !particles.isPlaying) {
@@ -108,7 +94,6 @@ public class CompActivate : MonoBehaviour {
                 playerRB.AddForce(direction.normalized * activationForce);
 
                 energyValue = energyValue - (energyDrain * Time.deltaTime);
-                energySlider.value = energyValue;
             }
         }
         else {

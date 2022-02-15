@@ -150,13 +150,11 @@ public class PlayerController : MonoBehaviour {
             //GameScene.stateFly = true;
             EnterFlyState();
             GameScene.EnterStateFly();
-            Debug.Log("Game State = Fly");
         }
         if (Input.GetKeyDown(KeyCode.F2)) {
             GameScene.ResetStates();
             GameScene.statePlaceComponent = true;
             EnterPlaceComponentState();
-            Debug.Log("Game state = Place Component");
         }
     }
 
@@ -184,7 +182,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void ClampAngularVelocity() {
-        //Debug.Log(comp.ragdollRB.angularVelocity);
         if (comp.ragdollRB.angularVelocity < -maxAngularVelocity) { comp.ragdollRB.angularVelocity = -maxAngularVelocity; }
         if (comp.ragdollRB.angularVelocity > maxAngularVelocity) { comp.ragdollRB.angularVelocity = maxAngularVelocity; }
     }

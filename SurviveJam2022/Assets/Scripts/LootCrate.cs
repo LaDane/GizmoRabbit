@@ -59,9 +59,9 @@ public class LootCrate : MonoBehaviour {
         allNodes.Reverse();
 
         // Check if there is a valid position
-        //float startTime = Time.time;
         System.DateTime startTime = System.DateTime.UtcNow;
         int loopIteration = 0;
+        bool compCanBePlaced = false;
         while (true) {
             GameObject componentPrefab = grabbaleList[0];
             GameObject component = Instantiate(componentPrefab, new Vector3(0,0,0), Quaternion.Euler(0, 0, 0));
@@ -69,31 +69,43 @@ public class LootCrate : MonoBehaviour {
             component.GetComponent<Comp>().StatePlaceComponent();
             
 
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 20; i++) {
                 float componentRotation = Random.Range(-90, 90);
                 component.transform.rotation = Quaternion.Euler(0, 0, componentRotation);
 
                 foreach(GameObject node in allNodes) {
+                    node.SetActive(true);
                     component.transform.position = node.transform.position;
-                    //component.transform.position = node.GetComponent<CompNode>().placementPos.position;
 
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.01f);
 
                     if (CanBePlaced(component, componentCollider)) {
-                        Destroy(component);
-                        grabbaleList.RemoveAt(0);
-                        GameScene.selectedCompRot = componentRotation;
-                        GameScene.selectedCompGO = componentPrefab;
-                        System.TimeSpan ts = System.DateTime.UtcNow - startTime;
-                        Debug.Log(component.name + " can be placed at : " + component.transform.position + "\tDuration seconds : "+ (ts.TotalMilliseconds / 1000).ToString("0.00"));
+                        //Destroy(component);
 
                         if (getSpecificComp && specificComp != null) {
                             GameScene.selectedCompRot = specificRotation;
                             GameScene.selectedCompGO = specificComp;
                         }
+                        else {
+                            //grabbaleList.RemoveAt(0);
+                            GameScene.selectedCompRot = componentRotation;
+                            GameScene.selectedCompGO = componentPrefab;
+                        }
 
-                        yield break;
+
+                        compCanBePlaced = true;
+                        //yield break;
                     }
+                    else {
+                        node.SetActive(false);
+                    }
+                }
+                if (compCanBePlaced) {
+                    grabbaleList.RemoveAt(0);
+                    System.TimeSpan ts = System.DateTime.UtcNow - startTime;
+                    Debug.Log(component.name + " can be placed at : " + component.transform.position + "\tDuration seconds : " + (ts.TotalMilliseconds / 1000).ToString("0.00"));
+                    Destroy(component);
+                    yield break;
                 }
             }
 
@@ -103,7 +115,7 @@ public class LootCrate : MonoBehaviour {
             grabbaleList.RemoveAt(0);
 
             //getIndex++;
-            if (grabbaleList.Count == 0) {
+            if (grabbaleList.Count == 1) {
                 originalList.Shuffle();
                 grabbaleList = new List<GameObject>(originalList);
             }
@@ -111,6 +123,7 @@ public class LootCrate : MonoBehaviour {
             loopIteration++;
             if (loopIteration > 50) {
                 Debug.LogError("GetNextComponent failed 50 times");
+                // Give messge to player that theres no spcae to place comps on their vehicle with home button
                 yield break;
             }
         }
