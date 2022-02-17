@@ -42,6 +42,7 @@ public class GameScene : MonoSingleton<GameScene> {
     public static void EnterStateMainMenu() {
         componentsPlaced = 0;
         timesPlayed = 0;
+        hasCompThatCanBeActivated = false;
 
         GameObject.FindGameObjectWithTag("Player").transform.position = playerOriginalPos;
         ResetStates();
@@ -71,6 +72,8 @@ public class GameScene : MonoSingleton<GameScene> {
     public static float distanceHighscore = 0f;
     public static int componentsPlaced = 0;
     public static int timesPlayed = 0;
+    public static bool hasCompThatCanBeActivated = false;
+    public static char compThatCanBeActivatedChar = 'a';
 
 
     private void Awake() {

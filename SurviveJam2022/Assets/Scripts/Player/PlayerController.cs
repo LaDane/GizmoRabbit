@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (GameScene.stateFly) {
+
             ClampAngularVelocity();
             if (!audioBellPlayed) {
                 audioBellPlayed = true;

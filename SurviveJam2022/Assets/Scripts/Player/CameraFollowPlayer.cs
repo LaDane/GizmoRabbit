@@ -8,6 +8,11 @@ public class CameraFollowPlayer : MonoBehaviour {
     [SerializeField] private Camera mainCamera;
     [HideInInspector] public Vector3 cameraPos;
     public bool cameraFollowingPlayer = false;
+
+    [Header("Free Look Limitations")]
+    [SerializeField] private Vector2 xLimits;
+    [SerializeField] private Vector2 yLimits;
+    
     private bool donePanning;
     private Vector3 dragOrigin;
     private float cameraSize = 5f;
@@ -40,7 +45,12 @@ public class CameraFollowPlayer : MonoBehaviour {
                         }
                         if (Input.GetMouseButton(1)) {
                             Vector3 difference = dragOrigin - mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
                             mainCamera.transform.position += difference;
+                            mainCamera.transform.position = new Vector3(
+                            Mathf.Clamp(mainCamera.transform.position.x, xLimits.x, xLimits.y),
+                            Mathf.Clamp(mainCamera.transform.position.y, yLimits.x, yLimits.y),
+                            -10);
                         }
                     }
                 }

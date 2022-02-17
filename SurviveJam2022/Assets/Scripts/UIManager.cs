@@ -38,7 +38,6 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Transform gameStateTracker;
     [SerializeField] private Text gameStateTrackerDistance;
     [SerializeField] private Text gameStateTrackerAltitude;
-    private bool gameStateTrackerActive = false;
 
     // Loot box screen
     [Header("Loot Box Screen")]
@@ -69,10 +68,21 @@ public class UIManager : MonoBehaviour {
     [Header("Place Component Screen")]
     [SerializeField] private GameObject placeComponentHomeButton;
     [SerializeField] private GameObject componentPlacementGuide;
+    [SerializeField] private Transform compPlaceGuide;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
 
+    [Header("Visual Tutorials")]
+    [SerializeField] private Transform wForForwardMenu;
+    [SerializeField] private Transform adToRotateMenu;
+    [SerializeField] private Transform rightMousePanMenu;
+    [SerializeField] private Transform compCanBeActivatedMenu;
+    [SerializeField] private GetLetterSprite getLetterSprite;
+    private bool wForForwardMenuDisplayed = false;
+    private bool compCanBeActivatedMenuDisplayed = false;
+
+    private string lastState = "Menu";
 
     private void Start() {
         howToPlayOriginalPos = howToPlayMenu.localPosition;
@@ -87,42 +97,69 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (GameScene.statePlaceComponent) {
-            if (!placeComponentHomeButton.activeInHierarchy) {
-                placeComponentHomeButton.SetActive(true);
-            }
-            if (!componentPlacementGuide.activeInHierarchy) {
-                componentPlacementGuide.SetActive(true);
-            }
+        if (lastState != GameScene.stateCurrent) {
+            searchingForComp = false;
+            statsDoneCounting = false;
+            lootBoxMenuMoving = false;
         }
-        if (!GameScene.statePlaceComponent) {
-            if (placeComponentHomeButton.activeInHierarchy) {
-                placeComponentHomeButton.SetActive(false);
+
+        if (GameScene.stateFly) {
+            if (lastState != GameScene.stateCurrent) {
+                if (GameScene.timesPlayed == 0) {
+                    wForForwardMenuDisplayed = true;
+                    StartCoroutine(AnimateMenuVertical(wForForwardMenu, wForForwardMenu.localPosition.y, wForForwardMenu.localPosition.y - 400, 1f));
+                } 
+                else {
+                    StartCoroutine(AnimateMenuHorizontal(compPlaceGuide, compPlaceGuide.localPosition.x, compPlaceGuide.localPosition.x - 300, 1f));
+                }
+
+                if (GameScene.timesPlayed == 1) {
+                    StartCoroutine(AnimateMenuVertical(rightMousePanMenu, rightMousePanMenu.localPosition.y, rightMousePanMenu.localPosition.y + 400, 1f));
+                }
+
+                StartCoroutine(AnimateMenuVertical(gameStateTracker, gameStateTracker.localPosition.y, gameStateTracker.localPosition.y + 250, 0.5f));
             }
-            if (componentPlacementGuide.activeInHierarchy) {
-                componentPlacementGuide.SetActive(false);
+
+            if (GameScene.hasCompThatCanBeActivated && !compCanBeActivatedMenuDisplayed) {
+                compCanBeActivatedMenuDisplayed = true;
+                StartCoroutine(AnimateCompCanBeActivatedVisualTutorial());
+            }
+
+            if (GameScene.timesPlayed == 0 && Input.GetKey(KeyCode.W) && wForForwardMenuDisplayed) {
+                wForForwardMenuDisplayed = false;
+                StartCoroutine(AnimateRotationVisualTutorial());
+            }
+
+            gameStateTrackerDistance.text = distanceTraveled + " METERS";
+            gameStateTrackerAltitude.text = altitude + " METERS";
+        }
+
+        else if (GameScene.statePlaceComponent) {
+            if (lastState != GameScene.stateCurrent) {
+                if (GameScene.timesPlayed == 1) {
+                    StartCoroutine(AnimateMenuVertical(rightMousePanMenu, rightMousePanMenu.localPosition.y, rightMousePanMenu.localPosition.y - 400, 1f));
+                }
+                StartCoroutine(AnimateMenuHorizontal(compPlaceGuide, compPlaceGuide.localPosition.x, compPlaceGuide.localPosition.x + 300, 1f));
             }
         }
 
-        if (howToPlayActive && Input.GetMouseButtonDown(0)) {
-            howToPlayActive = false;
-            StartCoroutine(AnimateMenuVertical(howToPlayMenu, 0f, howToPlayOriginalPos.y, topMenuAnimateTime));
-        }
-
-        if (GameScene.stateLootCrate) {
-            if (!lootBoxMenuMoving && !searchingForComp) {
-                searchingForComp = true;
-                StartCoroutine(lootCrate.GetNextComponent());
-                StartCoroutine(AnimateMenuVertical(statsMenu, statsMenu.localPosition.y, statsMenu.localPosition.y + 700, 0.5f));
-                StartCoroutine(AnimateStatsCounter());
+        else if (GameScene.stateLootCrate) {
+            if (lastState != GameScene.stateCurrent) {
+                if (!searchingForComp) {
+                    searchingForComp = true;
+                    StartCoroutine(lootCrate.GetNextComponent());
+                    StartCoroutine(AnimateMenuVertical(statsMenu, statsMenu.localPosition.y, statsMenu.localPosition.y + 700, 0.5f));
+                    StartCoroutine(AnimateStatsCounter());
+                }
+                StartCoroutine(AnimateMenuVertical(gameStateTracker, gameStateTracker.localPosition.y, gameStateTracker.localPosition.y - 250, 0.5f));
+                if (distanceTraveled > GameScene.distanceHighscore) {
+                    GameScene.distanceHighscore = distanceTraveled;
+                }
             }
 
-            // Move loot box menu up to center of screen
-            if (!lootBoxMenuMoving && lootBoxMenu.localPosition.y != 0 && GameScene.selectedCompGO != null && statsDoneCounting) {
-                statsDoneCounting = false;
+            if (!lootBoxMenuMoving && GameScene.selectedCompGO != null && statsDoneCounting) {
                 lootBoxMenuMoving = true;
                 StartCoroutine(AnimateMenuVertical(lootBoxMenu, lootBoxMenuStartY, 0, lootBoxMenuEnterTime));
-                lootBoxMenuMoving = false;
 
                 lootBoxImage.sprite = GameScene.selectedCompGO.GetComponent<Comp>().compSprite;
                 lootBoxImage.transform.rotation = Quaternion.Euler(0, 0, GameScene.selectedCompRot);
@@ -131,29 +168,13 @@ public class UIManager : MonoBehaviour {
                 textCompDescription.text = GameScene.selectedCompGO.GetComponent<Comp>().compDescription;
             }
         }
-        else {
-            searchingForComp = false;
+
+        if (howToPlayActive && Input.GetMouseButtonDown(0)) {
+            howToPlayActive = false;
+            StartCoroutine(AnimateMenuVertical(howToPlayMenu, 0f, howToPlayOriginalPos.y, topMenuAnimateTime));
         }
 
-        if (GameScene.stateFly) {
-            if (!gameStateTrackerActive) {
-                gameStateTrackerActive = true;
-                StartCoroutine(AnimateMenuVertical(gameStateTracker, gameStateTracker.localPosition.y, gameStateTracker.localPosition.y + 250, 0.5f));
-            }
-            if (gameStateTrackerActive) {
-                gameStateTrackerDistance.text = distanceTraveled + " METERS";
-                gameStateTrackerAltitude.text = altitude + " METERS";
-            }
-        }
-        if (!GameScene.stateFly) {
-            if (gameStateTrackerActive) {
-                if (distanceTraveled > GameScene.distanceHighscore) {
-                    GameScene.distanceHighscore = distanceTraveled;
-                }
-                gameStateTrackerActive = false;
-                StartCoroutine(AnimateMenuVertical(gameStateTracker, gameStateTracker.localPosition.y, gameStateTracker.localPosition.y - 250, 0.5f));
-            }
-        }
+        lastState = GameScene.stateCurrent;
     }
 
     #region Enter Game
@@ -199,7 +220,7 @@ public class UIManager : MonoBehaviour {
 
     private IEnumerator AnimateMenuHorizontal(Transform menu, float startPos, float endPos, float time) {
         float sTime = Time.time;
-        while (menu.localPosition.y != endPos) {
+        while (menu.localPosition.x != endPos) {
             yield return new WaitForFixedUpdate();
             float t = (Time.time - sTime) / time;
             menu.localPosition = new Vector3(Mathf.SmoothStep(startPos, endPos, t), menu.localPosition.y, menu.localPosition.z);
@@ -273,6 +294,30 @@ public class UIManager : MonoBehaviour {
         GameScene.EnterStateFly();
         cameraFollowPlayer.cameraFollowingPlayer = true;
     }
+    #endregion
+
+    #region Animation Visual Tutorials
+
+    private IEnumerator AnimateRotationVisualTutorial() {
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(AnimateMenuVertical(wForForwardMenu, wForForwardMenu.localPosition.y, wForForwardMenu.localPosition.y + 400, 0.5f));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(AnimateMenuVertical(adToRotateMenu, adToRotateMenu.localPosition.y, adToRotateMenu.localPosition.y - 400, 0.5f));
+        //yield return new WaitForSeconds(0.3f);
+        //wForForwardMenu.gameObject.SetActive(false);
+        yield return new WaitForSeconds(3.2f);
+        StartCoroutine(AnimateMenuVertical(adToRotateMenu, adToRotateMenu.localPosition.y, adToRotateMenu.localPosition.y + 400, 0.5f));
+        wForForwardMenu.gameObject.SetActive(false);
+    }
+
+    private IEnumerator AnimateCompCanBeActivatedVisualTutorial() {
+        yield return new WaitForSeconds(0.1f);
+        getLetterSprite.SetActivationLetter(GameScene.compThatCanBeActivatedChar);
+        StartCoroutine(AnimateMenuVertical(compCanBeActivatedMenu, compCanBeActivatedMenu.localPosition.y, compCanBeActivatedMenu.localPosition.y - 400, 1f));
+        yield return new WaitForSeconds(8f);
+        StartCoroutine(AnimateMenuVertical(compCanBeActivatedMenu, compCanBeActivatedMenu.localPosition.y, compCanBeActivatedMenu.localPosition.y + 400, 1f));
+    }
+
     #endregion
 
     #region Button Home

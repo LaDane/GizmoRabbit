@@ -34,6 +34,19 @@ public class GetLetterSprite : MonoBehaviour {
     public Dictionary<char, Sprite> letterSpriteDict = new Dictionary<char, Sprite>();
 
     public void SetActivationLetter(char c) {
+        FillLetterDict();
+
+        Sprite letterSprite = null;
+        letterSpriteDict.TryGetValue(c, out letterSprite);
+        if (letterSprite != null) {
+            spriteRenderer.sprite = letterSprite;
+        }
+        else {
+            Debug.LogError("Could not get activation letter sprite for char : " + c);
+        }
+    }
+
+    private void FillLetterDict() {
         letterSpriteDict.Add('b', sB);
         letterSpriteDict.Add('c', sC);
         letterSpriteDict.Add('e', sE);
@@ -57,15 +70,5 @@ public class GetLetterSprite : MonoBehaviour {
         letterSpriteDict.Add('x', sX);
         letterSpriteDict.Add('y', sY);
         letterSpriteDict.Add('z', sZ);
-
-        Sprite letterSprite = null;
-        letterSpriteDict.TryGetValue(c, out letterSprite);
-        if (letterSprite != null) {
-            spriteRenderer.sprite = letterSprite;
-        }
-        else {
-            Debug.LogError("Could not get activation letter sprite for char : " + c);
-        }
     }
-
 }

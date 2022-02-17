@@ -31,7 +31,7 @@ public class CompActivate : MonoBehaviour {
     private Rigidbody2D playerRB;
     private bool addedText = false;
     private GameObject letterGO = null;
-    private char activationChar;
+    [HideInInspector] public char activationChar;
 
     private void Awake() {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -64,6 +64,10 @@ public class CompActivate : MonoBehaviour {
             letterGO.GetComponent<GetLetterSprite>().SetActivationLetter(activationChar);
             letterGO.GetComponent<DestroyLetter>().playerGO = GameObject.FindGameObjectWithTag("Player").gameObject;
             letterGO.GetComponent<DestroyLetter>().attachedGameObject = gameObject;
+            if (!GameScene.hasCompThatCanBeActivated) {
+                GameScene.hasCompThatCanBeActivated = true;
+                GameScene.compThatCanBeActivatedChar = activationChar;
+            }
         }
 
         if (letterGO != null) {

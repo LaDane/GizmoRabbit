@@ -35,22 +35,11 @@ public class CompNode : MonoBehaviour {
             gameObject.SetActive(false);
             return;
         }
-
-        //if (GameScene.statePlaceComponent) {
-        //    CheckOverlap();
-        //}
     }
 
 
     private void OnMouseOver() {
         if (GameScene.selectedCompGO == null) { return; }
-        //if (!GameScene.canPlaceComponent) {
-        //    spriteRenderer.color = Color.red;
-        //    return; 
-        //} else {
-        //    spriteRenderer.color = Color.white;
-        //}
-
         spriteRenderer.color = Color.white;
 
         if (Input.GetMouseButtonDown(0)) {
