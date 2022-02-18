@@ -66,9 +66,10 @@ public class UIManager : MonoBehaviour {
     private Vector3 newRecordImageOriginalScale;
 
     [Header("Place Component Screen")]
-    [SerializeField] private GameObject placeComponentHomeButton;
-    [SerializeField] private GameObject componentPlacementGuide;
+    //[SerializeField] private GameObject placeComponentHomeButton;
+    //[SerializeField] private GameObject componentPlacementGuide;
     [SerializeField] private Transform compPlaceGuide;
+    [SerializeField] private Transform homeButton;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
@@ -108,16 +109,21 @@ public class UIManager : MonoBehaviour {
                 if (GameScene.timesPlayed == 0) {
                     wForForwardMenuDisplayed = true;
                     StartCoroutine(AnimateMenuVertical(wForForwardMenu, wForForwardMenu.localPosition.y, wForForwardMenu.localPosition.y - 400, 1f));
-                } 
-                else {
-                    StartCoroutine(AnimateMenuHorizontal(compPlaceGuide, compPlaceGuide.localPosition.x, compPlaceGuide.localPosition.x - 300, 1f));
                 }
 
                 if (GameScene.timesPlayed == 1) {
+                    StartCoroutine(AnimateMenuHorizontal(compPlaceGuide, compPlaceGuide.localPosition.x, compPlaceGuide.localPosition.x - 300, 1f));
+                }
+
+                if (GameScene.timesPlayed == 2) {
                     StartCoroutine(AnimateMenuVertical(rightMousePanMenu, rightMousePanMenu.localPosition.y, rightMousePanMenu.localPosition.y + 400, 1f));
                 }
 
                 StartCoroutine(AnimateMenuVertical(gameStateTracker, gameStateTracker.localPosition.y, gameStateTracker.localPosition.y + 250, 0.5f));
+
+                //if (GameScene.timesPlayed != 0) {
+                //    StartCoroutine(AnimateMenuHorizontal(homeButton, homeButton.localPosition.x, homeButton.localPosition.x - 300, 1f));
+                //}
             }
 
             if (GameScene.hasCompThatCanBeActivated && !compCanBeActivatedMenuDisplayed) {
@@ -125,7 +131,7 @@ public class UIManager : MonoBehaviour {
                 StartCoroutine(AnimateCompCanBeActivatedVisualTutorial());
             }
 
-            if (GameScene.timesPlayed == 0 && Input.GetKey(KeyCode.W) && wForForwardMenuDisplayed) {
+            if (GameScene.timesPlayed == 0 && Input.GetKey(KeyCode.W) && wForForwardMenuDisplayed && wForForwardMenu.localPosition.y == 50) {
                 wForForwardMenuDisplayed = false;
                 StartCoroutine(AnimateRotationVisualTutorial());
             }
@@ -137,9 +143,12 @@ public class UIManager : MonoBehaviour {
         else if (GameScene.statePlaceComponent) {
             if (lastState != GameScene.stateCurrent) {
                 if (GameScene.timesPlayed == 1) {
+                    StartCoroutine(AnimateMenuHorizontal(compPlaceGuide, compPlaceGuide.localPosition.x, compPlaceGuide.localPosition.x + 300, 1f));
+                }
+                if (GameScene.timesPlayed == 2) {
                     StartCoroutine(AnimateMenuVertical(rightMousePanMenu, rightMousePanMenu.localPosition.y, rightMousePanMenu.localPosition.y - 400, 1f));
                 }
-                StartCoroutine(AnimateMenuHorizontal(compPlaceGuide, compPlaceGuide.localPosition.x, compPlaceGuide.localPosition.x + 300, 1f));
+                StartCoroutine(AnimateMenuHorizontal(homeButton, homeButton.localPosition.x, homeButton.localPosition.x + 300, 1f));
             }
         }
 
@@ -158,6 +167,10 @@ public class UIManager : MonoBehaviour {
             }
 
             if (!lootBoxMenuMoving && GameScene.selectedCompGO != null && statsDoneCounting) {
+                if (GameScene.timesPlayed != 0) {
+                    StartCoroutine(AnimateMenuHorizontal(homeButton, homeButton.localPosition.x, homeButton.localPosition.x - 300, 1f));
+                }
+
                 lootBoxMenuMoving = true;
                 StartCoroutine(AnimateMenuVertical(lootBoxMenu, lootBoxMenuStartY, 0, lootBoxMenuEnterTime));
 

@@ -82,7 +82,8 @@ public class GameScene : MonoSingleton<GameScene> {
 
     private void Start() {
         playerObject = GameObject.FindGameObjectWithTag("Player");
-        playerOriginalPos = playerObject.transform.position;
+        //playerOriginalPos = playerObject.transform.position;
+        playerOriginalPos = new Vector3(-0.05f, -1.26f, 0f);
     }
 
     public static void ResetPlayerPosition() {

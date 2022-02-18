@@ -13,7 +13,10 @@ public class CompNode : MonoBehaviour {
     [Header("Layers")]
     [SerializeField] private LayerMask placementLayer;
 
-    private SpriteRenderer spriteRenderer;
+    [Header("Sprite Renderer")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Color hoverColor;
+
     private Color transparent = new Color(255, 255, 255);
     private Color originalColor;
 
@@ -24,7 +27,7 @@ public class CompNode : MonoBehaviour {
     }
 
     private void Start() {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        //spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         transparent.a = 0.42f;
     }
@@ -40,7 +43,8 @@ public class CompNode : MonoBehaviour {
 
     private void OnMouseOver() {
         if (GameScene.selectedCompGO == null) { return; }
-        spriteRenderer.color = Color.white;
+        //spriteRenderer.color = Color.white;
+        spriteRenderer.color = hoverColor;
 
         if (Input.GetMouseButtonDown(0)) {
             StartCoroutine(PlaceComponent());
@@ -48,7 +52,7 @@ public class CompNode : MonoBehaviour {
     }
 
     private void OnMouseExit() {
-        spriteRenderer.color = transparent;
+        //spriteRenderer.color = transparent;
         spriteRenderer.color = originalColor;
     }
 
