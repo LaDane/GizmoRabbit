@@ -17,7 +17,9 @@ Use ‘W’ to drive forwards while on the ground and the ‘A’ & ‘D’ keys
 ### Credits
 
 Developed in Unity by https://ladane.itch.io/
+
 Graphics and UI made in Illustrator by https://duendue.itch.io/
+
 Support in ideation proces - https://chamber95.itch.io/
 
 ### Audio
