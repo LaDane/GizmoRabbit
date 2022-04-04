@@ -10,6 +10,8 @@ Build strange vehicles and fly trough the skies in Gizmo Rabbit! Watch out for t
 
 Gizmo Rabbit was the result of combining a humanoid rodent with random gizmos and thingamajigs with inspiration from Rube Goldberg machines and the industrial age. Some of the components might help you fly longer, while others grant you more attachment points. Be careful how you place your components, as you can't undo it. Your vehicle will become bigger and bigger as attach more components . See if you can discover all the components in the game, beat your high score, or just build the coolest vehicle in town.
 
+![alt text](https://img.itch.zone/aW1hZ2UvMTM5ODEzMC84MTQ4ODU1LmpwZw==/original/FxgEVc.jpg) 
+
 ### Controls
 
 Use ‘W’ to drive forwards while on the ground and the ‘A’ & ‘D’ keys to adjust rotation while in the air. While in component placing mode, you can use 'Right-Click' to drag around the camera. Some components are interactable with an input indicated in-game, but the input changes as your vehicle grows bigger, so be cautious! 
